@@ -28,8 +28,9 @@ class MainWindow:
         add_sale_button = tk.Button(self.main_window, text='Add sale')
         edit_entries_products = tk.Button(self.main_window, text='Edit entries')
         add_price_products = tk.Button(self.main_window, text='Add price point')
-
         add_product_button = tk.Button(self.main_window, text='Add product')
+
+        self.product_stats_text = tk.Text(self.main_window, height=3, width=40)
 
         add_price_products.bind('<Button-1>', self.add_product_price_click)
         add_sale_button.bind('<Button-1>', self.add_sale_click)
@@ -41,6 +42,8 @@ class MainWindow:
         for x in product_widgets:
             x.grid(row=0, column=col)
             col += 1
+
+        self.product_stats_text.grid(row=1, column=0, columnspan=3)
 
         self.materials = []
         for x in material.material_list:
@@ -59,6 +62,8 @@ class MainWindow:
         add_price_materials = tk.Button(self.main_window, text='Add price point')
         add_material_button = tk.Button(self.main_window, text='Add material')
 
+        self.material_stats_text = tk.Text(self.main_window, height=3, width=40)
+
         add_material_button.bind('<Button-1>', self.add_material_click)
         add_price_materials.bind('<Button-1>', self.add_material_price_click)
 
@@ -69,14 +74,15 @@ class MainWindow:
 
         material_widgets = [self.material_menu, self.material_hq_checkbox, self.material_price_entry, add_purchase,
                             edit_entries_materials, add_price_materials, add_material_button]
-
         col = 0
         for x in material_widgets:
-            x.grid(row=1, column=col)
+            x.grid(row=2, column=col)
             col += 1
 
-        save_button.grid(row=2, column=5)
-        load_button.grid(row=3, column=5)
+        self.material_stats_text.grid(row=3, column=0, columnspan=3)
+
+        save_button.grid(row=4, column=5)
+        load_button.grid(row=5, column=5)
 
         self.main_window.mainloop()
 
