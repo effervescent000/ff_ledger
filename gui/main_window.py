@@ -1,9 +1,9 @@
 import tkinter as tk
-import gui.new_product_window as npw
+
 import gui.new_material_window as nmw
+import gui.new_product_window as npw
 import material
 import product
-import xml_parser
 
 
 class MainWindow:
@@ -31,12 +31,12 @@ class MainWindow:
         add_price_products.bind('<Button-1>', self.add_product_price_click)
         add_product_button.bind('<Button-1>', self.add_product_click)
 
-        product_menu.pack()
-        self.product_price_entry.pack()
-        add_sale_button.pack()
-        edit_entries_products.pack()
-        add_price_products.pack()
-        add_product_button.pack()
+        product_menu.grid(row=0, column=0)
+        self.product_price_entry.grid(row=0, column=1)
+        add_sale_button.grid(row=0, column=2)
+        edit_entries_products.grid(row=0, column=3)
+        add_price_products.grid(row=0, column=4)
+        add_product_button.grid(row=0, column=5)
 
         materials = []
         for x in material.material_list:
@@ -61,14 +61,15 @@ class MainWindow:
 
         save_button.bind('<Button-1>', self.save_button_click)
 
-        material_menu.pack()
-        self.material_price_entry.pack()
-        add_purchase.pack()
-        edit_entries_materials.pack()
-        add_price_materials.pack()
-        add_material_button.pack()
-        save_button.pack()
-        load_button.pack()
+        material_menu.grid(row=1, column=0)
+        self.material_price_entry.grid(row=1, column=1)
+        add_purchase.grid(row=1, column=2)
+        edit_entries_materials.grid(row=1, column=3)
+        add_price_materials.grid(row=1, column=4)
+        add_material_button.grid(row=1, column=5)
+
+        save_button.grid(row=2, column=5)
+        load_button.grid(row=3, column=5)
 
         self.main_window.mainloop()
 
