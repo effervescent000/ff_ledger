@@ -16,20 +16,26 @@ class XmlParser:
             self.tree = et.ElementTree(self.root)
 
     def add_product_to_xml(self, prod):
-        new_prod = et.SubElement(self.root, 'product', {'name': prod.name})
-        sales = et.SubElement(new_prod, 'sales')
-        sales.text = str(prod.sales)
-        for x in prod.price_data:
-            price_element = et.SubElement(new_prod, 'price', {'time': x.time_str})
-            price_element.text = str(x.price)
+        # TODO add HQ as an attribute
+        if self.root.findtext(prod.name) is None:
+            new_prod = et.SubElement(self.root, 'product')
+            new_prod.text = prod.name
+            sales = et.SubElement(new_prod, 'sales')
+            sales.text = str(prod.sales)
+            for x in prod.price_data:
+                price_element = et.SubElement(new_prod, 'price', {'time': x.time_str})
+                price_element.text = str(x.price)
 
     def add_material_to_xml(self, mat):
-        new_mat = et.SubElement(self.root, 'material', {'name': mat.name})
-        purchases = et.SubElement(new_mat, 'purchases')
-        purchases.text = str(mat.purchases)
-        for x in mat.price_data:
-            price_element = et.SubElement(new_mat, 'price', {'time': x.time_str})
-            price_element.text = str(x.price)
+        # TODO add HQ as an attribute
+        if self.root.findtext(mat.name) is None:
+            new_mat = et.SubElement(self.root, 'material')
+            new_mat.text = mat.name
+            purchases = et.SubElement(new_mat, 'purchases')
+            purchases.text = str(mat.purchases)
+            for x in mat.price_data:
+                price_element = et.SubElement(new_mat, 'price', {'time': x.time_str})
+                price_element.text = str(x.price)
 
     def populate_items(self):
         for child in self.root:
@@ -45,7 +51,7 @@ class XmlParser:
         #  I don't think it's breaking anything
 
     def get_product_from_xml(self, node):
-        new_product = product.Product(node.attrib['name'])
+        new_product = product.Product(node.text)
         for child in node:
             if child.tag == 'price':
                 if child.text is None:
@@ -57,7 +63,7 @@ class XmlParser:
         product.add_to_product_list(new_product)
 
     def get_material_from_xml(self, node):
-        new_material = material.Material(node.attrib['name'])
+        new_material = material.Material(node.text)
         for child in node:
             if child.tag == 'price':
                 if child.text is None:
@@ -72,7 +78,6 @@ class XmlParser:
         print('Saving...')
         # first, delete the old file so we aren't just appending to it. Commenting this out b/c I'm not sure this was
         # actually the problem
-        # with open(self.name, 'w') as datafile:
-        #     datafile.write('<?xml version="1.0" ?>')
-        self.tree.write(self.name)
+        with open(self.name, 'w') as f:
+            self.tree.write(f, encoding='unicode')
         print('Done saving!')
