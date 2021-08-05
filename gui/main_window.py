@@ -76,8 +76,13 @@ class MainWindow:
         self.main_window.mainloop()
 
     def add_sale_click(self, event):
-        self.match_product().sales += 1
-        print('Sale added successfully')
+        if self.product_price_entry.get() is None:
+            print('Please enter a sale value!')
+        else:
+            prod = self.match_product()
+            prod.sales += 1
+            prod.add_price_point(self.product_price_entry.get())
+            print('Sale added successfully')
 
     def add_product_price_click(self, event):
         if self.chosen_product is not None and self.product_price_entry.get() is not None:
