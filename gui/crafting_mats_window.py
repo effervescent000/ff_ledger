@@ -46,13 +46,13 @@ class CraftingMatsWindow:
         self.ok_button.bind('<Button-1>', self.save_button_click)
 
     def save_button_click(self, event):
-        if self.item_1_var is not None:
+        if self.item_1_var.get() is not '':
             self.add_crafting_reagent(1)
-        if self.item_2_var is not None:
+        if self.item_2_var.get() is not '':
             self.add_crafting_reagent(2)
-        if self.item_3_var is not None:
+        if self.item_3_var.get() is not '':
             self.add_crafting_reagent(3)
-        if self.item_4_var is not None:
+        if self.item_4_var.get() is not '':
             self.add_crafting_reagent(4)
         self.crafting_mats_window.destroy()
 
