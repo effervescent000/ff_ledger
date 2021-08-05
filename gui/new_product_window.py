@@ -28,3 +28,4 @@ class NewProductWindow:
             new_product = product.Product(self.product_name.get())
             new_product.add_price_point(self.product_price.get())
             product.product_list.append(new_product)
+        self.new_product_window.destroy()

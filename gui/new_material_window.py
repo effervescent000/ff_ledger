@@ -34,3 +34,4 @@ class NewMaterialWindow:
             new_material = material.Material(self.material_name.get())
             new_material.add_price_point(self.material_price.get())
             material.material_list.append(new_material)
+        self.new_material_window.destroy()
