@@ -1,5 +1,6 @@
 import item
 import tkinter as tk
+from tkinter import ttk
 
 import material
 
@@ -21,20 +22,21 @@ class CraftingMatsWindow:
             r += 1
 
         option_list = [x.name for x in material.material_list]
+        option_list.sort()
 
         self.item_1_var = tk.StringVar(self.crafting_mats_window)
         self.item_2_var = tk.StringVar(self.crafting_mats_window)
         self.item_3_var = tk.StringVar(self.crafting_mats_window)
         self.item_4_var = tk.StringVar(self.crafting_mats_window)
 
-        self.item_1_option = tk.OptionMenu(self.crafting_mats_window, self.item_1_var, *option_list).grid(row=0,
-                                                                                                          column=1)
-        self.item_2_option = tk.OptionMenu(self.crafting_mats_window, self.item_2_var, *option_list).grid(row=1,
-                                                                                                          column=1)
-        self.item_3_option = tk.OptionMenu(self.crafting_mats_window, self.item_3_var, *option_list).grid(row=2,
-                                                                                                          column=1)
-        self.item_4_option = tk.OptionMenu(self.crafting_mats_window, self.item_4_var, *option_list).grid(row=3,
-                                                                                                          column=1)
+        self.item_1_combo = ttk.Combobox(self.crafting_mats_window, textvariable=self.item_1_var,
+                                         values=option_list).grid(row=0, column=1)
+        self.item_2_combo = ttk.Combobox(self.crafting_mats_window, textvariable=self.item_2_var,
+                                         values=option_list).grid(row=1, column=1)
+        self.item_3_combo = ttk.Combobox(self.crafting_mats_window, textvariable=self.item_3_var,
+                                         values=option_list).grid(row=2, column=1)
+        self.item_4_combo = ttk.Combobox(self.crafting_mats_window, textvariable=self.item_4_var,
+                                         values=option_list).grid(row=3, column=1)
 
         self.ok_button = tk.Button(self.crafting_mats_window, text='Ok')
         self.cancel_button = tk.Button(self.crafting_mats_window, text='Cancel',
