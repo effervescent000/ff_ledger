@@ -125,6 +125,8 @@ class MainWindow:
         else:
             self.product_crafting_var.set(self.drill_down(prod))
 
+        self.product_stock_var.set(prod.stock)
+
     def display_stats_material(self, event):
         mat = material.check_in_materials(self.material_combo.get())
         try:
@@ -146,9 +148,9 @@ class MainWindow:
                 return None
             else:
                 if len(mat.reagents) > 0:
-                    self.drill_down(mat)
+                    crafting_cost += self.drill_down(mat) * float(x[1])
                 else:
-                    crafting_cost += price * int(x[1])
+                    crafting_cost += price * float(x[1])
         return crafting_cost
 
     def add_sale_click(self, event):
@@ -193,3 +195,4 @@ class MainWindow:
             self.xp.add_material_to_xml(x)
 
         self.xp.save_xml()
+        self.main_window.destroy()
