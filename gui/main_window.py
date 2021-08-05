@@ -113,21 +113,19 @@ class MainWindow:
     def crafting_mats_material_click(self, event):
         cmw.CraftingMatsWindow(material.check_in_materials(self.chosen_material.get()))
 
-    def display_stats_product(self, event):
+    def display_stats_product(self, event=None):
         prod = product.check_in_products(self.product_combo.get())
         try:
             self.product_price_var.set(prod.get_price())
         except AttributeError:
             self.product_price_var.set('0')
-
         if len(prod.reagents) == 0:
             self.product_crafting_var.set('0')
         else:
             self.product_crafting_var.set(self.drill_down(prod))
-
         self.product_stock_var.set(prod.stock)
 
-    def display_stats_material(self, event):
+    def display_stats_material(self, event=None):
         mat = material.check_in_materials(self.material_combo.get())
         try:
             self.material_price_var.set(mat.get_price())
@@ -154,31 +152,33 @@ class MainWindow:
         return crafting_cost
 
     def add_sale_click(self, event):
-        if self.product_price_entry.get() is None:
+        if self.product_price_entry.get() is '':
             print('Please enter a sale value!')
         else:
             prod = product.check_in_products(self.product_combo.get())
             prod.sales += 1
             prod.stock -= 1
-            prod.add_price_point(self.product_price_entry.get() / .95)
-            print('Sale added successfully')
+            prod.add_price_point(int(self.product_price_entry.get()) / .95)
+            self.display_stats_product()
 
     def add_stock_click(self, event):
         prod = product.check_in_products(self.product_combo.get())
         prod.stock += 1
-        print('Stock added successfully')
+        self.display_stats_product()
 
     def add_product_price_click(self, event):
         if self.chosen_product is not None and self.product_price_entry.get() is not None:
             prod = product.check_in_products(self.chosen_product.get())
             if prod is not False:
                 prod.add_price_point(self.product_price_entry.get())
+                self.display_stats_product()
 
     def add_material_price_click(self, event):
         if self.chosen_material is not None and self.material_price_entry.get() is not None:
             mat = material.check_in_materials((self.chosen_material.get()))
             if mat is not False:
                 mat.add_price_point(self.material_price_entry.get())
+                self.display_stats_material()
 
     def add_material_click(self, event):
         nmw.NewMaterialWindow()
