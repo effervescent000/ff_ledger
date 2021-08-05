@@ -33,12 +33,12 @@ class MainWindow:
         add_sale_button.bind('<Button-1>', self.add_sale_click)
         add_product_button.bind('<Button-1>', self.add_product_click)
 
-        self.product_menu.grid(row=0, column=0)
-        self.product_price_entry.grid(row=0, column=1)
-        add_sale_button.grid(row=0, column=2)
-        edit_entries_products.grid(row=0, column=3)
-        add_price_products.grid(row=0, column=4)
-        add_product_button.grid(row=0, column=5)
+        product_widgets = [self.product_menu, self.product_price_entry, add_sale_button, edit_entries_products,
+                           add_price_products, add_product_button]
+        col = 0
+        for x in product_widgets:
+            x.grid(row=0, column=col)
+            col += 1
 
         self.materials = []
         for x in material.material_list:
@@ -63,12 +63,12 @@ class MainWindow:
 
         save_button.bind('<Button-1>', self.save_button_click)
 
-        self.material_menu.grid(row=1, column=0)
-        self.material_price_entry.grid(row=1, column=1)
-        add_purchase.grid(row=1, column=2)
-        edit_entries_materials.grid(row=1, column=3)
-        add_price_materials.grid(row=1, column=4)
-        add_material_button.grid(row=1, column=5)
+        material_widgets = [self.material_menu, self.material_price_entry, add_purchase, edit_entries_materials,
+                            add_price_materials, add_material_button]
+        col = 0
+        for x in material_widgets:
+            x.grid(row=1, column=col)
+            col += 1
 
         save_button.grid(row=2, column=5)
         load_button.grid(row=3, column=5)
@@ -123,4 +123,3 @@ class MainWindow:
             self.xp.add_material_to_xml(x)
 
         self.xp.save_xml()
-
