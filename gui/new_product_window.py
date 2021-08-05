@@ -18,8 +18,8 @@ class NewProductWindow:
             x.grid(row=0, column=col)
             col += 1
 
-        ok_button.grid(row=1,column=2)
-        cancel_button.grid(row=2,column=2)
+        ok_button.grid(row=1, column=2)
+        cancel_button.grid(row=2, column=2)
 
         ok_button.bind('<Button-1>', self.save_new_product)
 
