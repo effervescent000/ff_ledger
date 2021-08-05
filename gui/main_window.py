@@ -27,6 +27,7 @@ class MainWindow:
         self.product_hq_checkbox_var = tk.IntVar(self.main_window)
         self.product_hq_checkbox = tk.Checkbutton(self.main_window, text='HQ', variable=self.product_hq_checkbox_var)
         add_sale_button = tk.Button(self.main_window, text='Add sale')
+        add_stock_button = tk.Button(self.main_window, text='Add stock')
         edit_entries_products = tk.Button(self.main_window, text='Edit entries')
         add_price_products = tk.Button(self.main_window, text='Add price point')
         add_product_button = tk.Button(self.main_window, text='Add product')
@@ -36,15 +37,18 @@ class MainWindow:
         product_price_label = tk.Label(self.main_window, textvariable=self.product_price_var)
         self.product_crafting_var = tk.StringVar(self.main_window)
         product_crafting_label = tk.Label(self.main_window, textvariable=self.product_crafting_var)
+        self.product_stock_var = tk.StringVar()
+        product_stock_label = tk.Label(self.main_window, textvariable=self.product_stock_var)
 
         add_price_products.bind('<Button-1>', self.add_product_price_click)
         add_sale_button.bind('<Button-1>', self.add_sale_click)
+        add_stock_button.bind('<Button-1>', self.add_stock_click)
         add_product_button.bind('<Button-1>', self.add_product_click)
         add_crafting_mats_product_button.bind('<Button-1>', self.crafting_mats_product_click)
         self.product_combo.bind('<<ComboboxSelected>>', self.display_stats_product)
 
         product_widgets = [self.product_combo, self.product_hq_checkbox, self.product_price_entry, add_sale_button,
-                           edit_entries_products, add_price_products, add_product_button,
+                           add_stock_button, edit_entries_products, add_price_products, add_product_button,
                            add_crafting_mats_product_button]
         col = 0
         for x in product_widgets:
@@ -53,6 +57,7 @@ class MainWindow:
 
         product_price_label.grid(row=1, column=0)
         product_crafting_label.grid(row=1, column=2)
+        product_stock_label.grid(row=1, column=3)
 
         self.materials = [x.name for x in material.material_list]
         self.materials.sort()
@@ -150,10 +155,16 @@ class MainWindow:
         if self.product_price_entry.get() is None:
             print('Please enter a sale value!')
         else:
-            prod = self.match_product()
+            prod = product.check_in_products(self.product_combo.get())
             prod.sales += 1
-            prod.add_price_point(self.product_price_entry.get())
+            prod.stock -= 1
+            prod.add_price_point(self.product_price_entry.get() / .95)
             print('Sale added successfully')
+
+    def add_stock_click(self, event):
+        prod = product.check_in_products(self.product_combo.get())
+        prod.stock += 1
+        print('Stock added successfully')
 
     def add_product_price_click(self, event):
         if self.chosen_product is not None and self.product_price_entry.get() is not None:
@@ -166,18 +177,6 @@ class MainWindow:
             mat = material.check_in_materials((self.chosen_material.get()))
             if mat is not False:
                 mat.add_price_point(self.material_price_entry.get())
-
-    def match_product(self):
-        for x in product.product_list:
-            if self.chosen_product.get() == x.name:
-                return x
-        return False
-
-    def match_material(self):
-        for x in material.material_list:
-            if self.chosen_material.get() == x.name:
-                return x
-        return False
 
     def add_material_click(self, event):
         nmw.NewMaterialWindow()
