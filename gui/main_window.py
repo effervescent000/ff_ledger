@@ -23,6 +23,8 @@ class MainWindow:
         self.chosen_product.set('Select a product')
         self.product_price_entry = tk.Entry(self.main_window)
         self.product_menu = tk.OptionMenu(self.main_window, self.chosen_product, *self.products)
+        self.product_hq_checkbox_var = tk.IntVar(self.main_window)
+        self.product_hq_checkbox = tk.Checkbutton(self.main_window, text='HQ', variable=self.product_hq_checkbox_var)
         add_sale_button = tk.Button(self.main_window, text='Add sale')
         edit_entries_products = tk.Button(self.main_window, text='Edit entries')
         add_price_products = tk.Button(self.main_window, text='Add price point')
@@ -33,8 +35,8 @@ class MainWindow:
         add_sale_button.bind('<Button-1>', self.add_sale_click)
         add_product_button.bind('<Button-1>', self.add_product_click)
 
-        product_widgets = [self.product_menu, self.product_price_entry, add_sale_button, edit_entries_products,
-                           add_price_products, add_product_button]
+        product_widgets = [self.product_menu, self.product_hq_checkbox, self.product_price_entry, add_sale_button,
+                           edit_entries_products, add_price_products, add_product_button]
         col = 0
         for x in product_widgets:
             x.grid(row=0, column=col)
@@ -50,6 +52,8 @@ class MainWindow:
         self.chosen_material.set('Select a material')
         self.material_price_entry = tk.Entry(self.main_window)
         self.material_menu = tk.OptionMenu(self.main_window, self.chosen_material, *self.materials)
+        self.material_hq_checkbox_var = tk.IntVar(self.main_window)
+        self.material_hq_checkbox = tk.Checkbutton(self.main_window, text='HQ', variable=self.material_hq_checkbox_var)
         add_purchase = tk.Button(self.main_window, text='Add purchase')
         edit_entries_materials = tk.Button(self.main_window, text='Edit entries')
         add_price_materials = tk.Button(self.main_window, text='Add price point')
@@ -63,8 +67,9 @@ class MainWindow:
 
         save_button.bind('<Button-1>', self.save_button_click)
 
-        material_widgets = [self.material_menu, self.material_price_entry, add_purchase, edit_entries_materials,
-                            add_price_materials, add_material_button]
+        material_widgets = [self.material_menu, self.material_hq_checkbox, self.material_price_entry, add_purchase,
+                            edit_entries_materials, add_price_materials, add_material_button]
+
         col = 0
         for x in material_widgets:
             x.grid(row=1, column=col)
