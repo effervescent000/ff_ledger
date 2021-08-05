@@ -73,4 +73,4 @@ class CraftingMatsWindow:
             v = self.quantity_4_entry.get()
         if v is None:
             v = 1
-        self.root_item.reagents[k] = v
+        self.root_item.reagents[k.name] = v

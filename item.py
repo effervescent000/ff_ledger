@@ -15,7 +15,7 @@ class Item:
         self.craftable = None  # should be true or false
 
     def add_price_point(self, num, time=datetime.datetime.now()):
-        self.price_data.append(price.Price(num, time))
+        self.price_data.append(price.Price(int(num), time))
 
     def get_price(self):
         price_list = [x.price for x in self.price_data if x.price > 0]

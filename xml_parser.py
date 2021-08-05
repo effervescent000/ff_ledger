@@ -27,7 +27,7 @@ class XmlParser:
                 price_element.text = str(x.price)
             for x in prod.reagents.items():
                 reagent = et.SubElement(new_prod, 'reagent', {'amount': str(x[1])})
-                reagent.text = x[0].name
+                reagent.text = x[0]
 
     def add_material_to_xml(self, mat):
         # TODO add HQ as an attribute
@@ -41,7 +41,7 @@ class XmlParser:
                 price_element.text = str(x.price)
             for x in mat.reagents.items():
                 reagent = et.SubElement(new_mat, 'reagent', {'amount': str(x[1])})
-                reagent.text = x[0].name
+                reagent.text = x[0]
 
     def populate_items(self):
         for child in self.root:
@@ -67,12 +67,7 @@ class XmlParser:
             new_product.add_price_point(child_price, child_time)
         for child in node.findall('reagent'):
             if child.text is not None:
-                check_child = material.check_in_materials(child.text)
-                if check_child is not False:
-                    new_product.reagents[check_child] = child.attrib['amount']
-                else:
-                    new_reagent = material.Material(child.text)
-                    new_product.reagents[new_reagent] = child.attrib['amount']
+                new_product.reagents[child.text] = child.attrib['amount']
         product.add_to_product_list(new_product)
 
     def get_material_from_xml(self, node):
@@ -86,12 +81,7 @@ class XmlParser:
             new_material.add_price_point(child_price, child_time)
         for child in node.findall('reagent'):
             if child.text is not None:
-                check_child = material.check_in_materials(child.text)
-                if check_child is not False:
-                    new_material.reagents[check_child] = child.attrib['amount']
-                else:
-                    new_reagent = material.Material(child.text)
-                    new_material.reagents[new_reagent] = child.attrib['amount']
+                new_material.reagents[child.text] = child.attrib['amount']
         material.add_to_material_list(new_material)
 
     def save_xml(self):
