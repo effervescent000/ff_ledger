@@ -12,9 +12,8 @@ class MainWindow:
         self.xp = xp
         self.main_window = tk.Tk()
 
-        self.products = []
-        for x in product.product_list:
-            self.products.append(x.name)
+        self.products = [x.name for x in product.product_list]
+        self.products.sort()
         if len(self.products) == 0:
             self.products.append('None')
 
@@ -51,9 +50,8 @@ class MainWindow:
 
         product_stats_label.grid(row=1, column=0)
 
-        self.materials = []
-        for x in material.material_list:
-            self.materials.append(x.name)
+        self.materials = [x.name for x in material.material_list]
+        self.materials.sort()
         if len(self.materials) == 0:
             self.materials.append('None')
 
