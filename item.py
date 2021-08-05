@@ -18,13 +18,12 @@ class Item:
         self.price_data.append(price.Price(num, time))
 
     def get_price(self):
-        price_list = []
-        for x in self.price_data:
-            price_list.append(x.price)
+        price_list = [x.price for x in self.price_data if x.price > 0]
         if len(price_list) > 0:
             self.price = sum(price_list) / len(price_list)
         else:
             self.price = 0
+        return self.price
 
     def prep_for_records(self):
         self.price_str = str(self.price)
