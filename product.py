@@ -10,8 +10,7 @@ def check_in_products(name):
         for x in product_list:
             if name == x.name:
                 return x
-            else:
-                return False
+        return False
 
 
 def add_to_product_list(prod):
