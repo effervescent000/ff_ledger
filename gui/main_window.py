@@ -34,11 +34,14 @@ class MainWindow:
 
         self.product_price_var = tk.StringVar(self.main_window)
         product_price_label = tk.Label(self.main_window, textvariable=self.product_price_var)
+        self.product_crafting_var = tk.StringVar(self.main_window)
+        product_crafting_label = tk.Label(self.main_window, textvariable=self.product_crafting_var)
 
         add_price_products.bind('<Button-1>', self.add_product_price_click)
         add_sale_button.bind('<Button-1>', self.add_sale_click)
         add_product_button.bind('<Button-1>', self.add_product_click)
         add_crafting_mats_product_button.bind('<Button-1>', self.crafting_mats_product_click)
+        self.product_combo.bind('<<ComboboxSelected>>', self.display_stats_product)
 
         product_widgets = [self.product_combo, self.product_hq_checkbox, self.product_price_entry, add_sale_button,
                            edit_entries_products, add_price_products, add_product_button,
@@ -49,6 +52,7 @@ class MainWindow:
             col += 1
 
         product_price_label.grid(row=1, column=0)
+        product_crafting_label.grid(row=1, column=2)
 
         self.materials = [x.name for x in material.material_list]
         self.materials.sort()
@@ -69,10 +73,13 @@ class MainWindow:
 
         self.material_price_var = tk.StringVar(self.main_window)
         material_price_label = tk.Label(self.main_window, textvariable=self.material_price_var)
+        self.material_crafting_var = tk.StringVar(self.main_window)
+        material_crafting_label = tk.Label(self.main_window, textvariable=self.material_crafting_var)
 
         add_material_button.bind('<Button-1>', self.add_material_click)
         add_price_materials.bind('<Button-1>', self.add_material_price_click)
         add_crafting_mats_material_button.bind('<Button-1>', self.crafting_mats_material_click)
+        self.material_combo.bind('<<ComboboxSelected>>', self.display_stats_material)
 
         save_button = tk.Button(self.main_window, text='Save data')
         load_button = tk.Button(self.main_window, text='Load data')
@@ -88,6 +95,7 @@ class MainWindow:
             col += 1
 
         material_price_label.grid(row=3, column=0)
+        material_crafting_label.grid(row=3, column=2)
 
         save_button.grid(row=4, column=5)
         load_button.grid(row=5, column=5)
@@ -100,17 +108,43 @@ class MainWindow:
     def crafting_mats_material_click(self, event):
         cmw.CraftingMatsWindow(material.check_in_materials(self.chosen_material.get()))
 
-    def display_price_product(self, name):
+    def display_stats_product(self, event):
+        prod = product.check_in_products(self.product_combo.get())
         try:
-            self.product_price_var.set(product.check_in_products(name).get_price())
+            self.product_price_var.set(prod.get_price())
         except AttributeError:
             self.product_price_var.set('0')
 
-    def display_price_material(self, name):
+        if len(prod.reagents) == 0:
+            self.product_crafting_var.set('0')
+        else:
+            self.product_crafting_var.set(self.drill_down(prod))
+
+    def display_stats_material(self, event):
+        mat = material.check_in_materials(self.material_combo.get())
         try:
-            self.material_price_var.set(material.check_in_materials(name).get_price())
+            self.material_price_var.set(mat.get_price())
         except AttributeError:
             self.material_price_var.set('0')
+
+        if len(mat.reagents) == 0:
+            self.material_crafting_var.set('0')
+        else:
+            self.material_crafting_var.set(self.drill_down(mat))
+
+    def drill_down(self, item):
+        crafting_cost = 0
+        for x in item.reagents.items():
+            mat = material.check_in_materials(x[0])
+            price = mat.get_price()
+            if price == 0:
+                return None
+            else:
+                if len(mat.reagents) > 0:
+                    self.drill_down(mat)
+                else:
+                    crafting_cost += price * int(x[1])
+        return crafting_cost
 
     def add_sale_click(self, event):
         if self.product_price_entry.get() is None:
