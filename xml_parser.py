@@ -22,6 +22,8 @@ class XmlParser:
             new_prod.text = prod.name
             sales = et.SubElement(new_prod, 'sales')
             sales.text = str(prod.sales)
+            stock = et.SubElement(new_prod, 'stock')
+            stock.text = str(prod.stock)
             for x in prod.price_data:
                 price_element = et.SubElement(new_prod, 'price', {'time': x.time_str})
                 price_element.text = str(x.price)
@@ -69,6 +71,13 @@ class XmlParser:
             if child.text is not None:
                 new_product.reagents[child.text] = child.attrib['amount']
         product.add_to_product_list(new_product)
+        sales = node.find('sales')
+        if sales is not None:
+            new_product.sales = int(sales.text)
+        stock = node.find('stock')
+        if stock is not None:
+            new_product.stock = int(stock.text)
+
 
     def get_material_from_xml(self, node):
         new_material = material.Material(node.text)
