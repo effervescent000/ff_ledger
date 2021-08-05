@@ -2,6 +2,7 @@ import tkinter as tk
 
 import gui.new_material_window as nmw
 import gui.new_product_window as npw
+import gui.crafting_mats_window as cmw
 import material
 import product
 
@@ -30,6 +31,7 @@ class MainWindow:
         edit_entries_products = tk.Button(self.main_window, text='Edit entries')
         add_price_products = tk.Button(self.main_window, text='Add price point')
         add_product_button = tk.Button(self.main_window, text='Add product')
+        add_crafting_mats_product_button = tk.Button(self.main_window, text='Add crafting mats')
 
         self.product_price_var = tk.StringVar(self.main_window)
         product_stats_label = tk.Label(self.main_window, textvariable=self.product_price_var)
@@ -37,9 +39,11 @@ class MainWindow:
         add_price_products.bind('<Button-1>', self.add_product_price_click)
         add_sale_button.bind('<Button-1>', self.add_sale_click)
         add_product_button.bind('<Button-1>', self.add_product_click)
+        add_crafting_mats_product_button.bind('<Button-1>', self.crafting_mats_product_click)
 
         product_widgets = [self.product_menu, self.product_hq_checkbox, self.product_price_entry, add_sale_button,
-                           edit_entries_products, add_price_products, add_product_button]
+                           edit_entries_products, add_price_products, add_product_button,
+                           add_crafting_mats_product_button]
         col = 0
         for x in product_widgets:
             x.grid(row=0, column=col)
@@ -64,12 +68,14 @@ class MainWindow:
         edit_entries_materials = tk.Button(self.main_window, text='Edit entries')
         add_price_materials = tk.Button(self.main_window, text='Add price point')
         add_material_button = tk.Button(self.main_window, text='Add material')
+        add_crafting_mats_material_button = tk.Button(self.main_window, text='Add crafting mats')
 
         self.material_price_var = tk.StringVar(self.main_window)
         material_stats_label = tk.Label(self.main_window, textvariable=self.material_price_var)
 
         add_material_button.bind('<Button-1>', self.add_material_click)
         add_price_materials.bind('<Button-1>', self.add_material_price_click)
+        add_crafting_mats_material_button.bind('<Button-1>', self.crafting_mats_material_click)
 
         save_button = tk.Button(self.main_window, text='Save data')
         load_button = tk.Button(self.main_window, text='Load data')
@@ -77,7 +83,8 @@ class MainWindow:
         save_button.bind('<Button-1>', self.save_button_click)
 
         material_widgets = [self.material_menu, self.material_hq_checkbox, self.material_price_entry, add_purchase,
-                            edit_entries_materials, add_price_materials, add_material_button]
+                            edit_entries_materials, add_price_materials, add_material_button,
+                            add_crafting_mats_material_button]
         col = 0
         for x in material_widgets:
             x.grid(row=2, column=col)
@@ -89,6 +96,12 @@ class MainWindow:
         load_button.grid(row=5, column=5)
 
         self.main_window.mainloop()
+
+    def crafting_mats_product_click(self, event):
+        cmw.CraftingMatsWindow(product.check_in_products(self.chosen_product.get()))
+
+    def crafting_mats_material_click(self, event):
+        cmw.CraftingMatsWindow(material.check_in_materials(self.chosen_material.get()))
 
     def display_price_product(self, name):
         try:
