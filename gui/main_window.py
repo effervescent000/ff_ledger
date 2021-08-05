@@ -22,7 +22,8 @@ class MainWindow:
         self.chosen_product = tk.StringVar(self.main_window)
         self.chosen_product.set('Select a product')
         self.product_price_entry = tk.Entry(self.main_window)
-        self.product_menu = tk.OptionMenu(self.main_window, self.chosen_product, *self.products)
+        self.product_menu = tk.OptionMenu(self.main_window, self.chosen_product, *self.products,
+                                          command=self.display_price_product)
         self.product_hq_checkbox_var = tk.IntVar(self.main_window)
         self.product_hq_checkbox = tk.Checkbutton(self.main_window, text='HQ', variable=self.product_hq_checkbox_var)
         add_sale_button = tk.Button(self.main_window, text='Add sale')
@@ -30,7 +31,8 @@ class MainWindow:
         add_price_products = tk.Button(self.main_window, text='Add price point')
         add_product_button = tk.Button(self.main_window, text='Add product')
 
-        self.product_stats_text = tk.Text(self.main_window, height=3, width=40)
+        self.product_price_var = tk.StringVar(self.main_window)
+        product_stats_label = tk.Label(self.main_window, textvariable=self.product_price_var)
 
         add_price_products.bind('<Button-1>', self.add_product_price_click)
         add_sale_button.bind('<Button-1>', self.add_sale_click)
@@ -43,7 +45,7 @@ class MainWindow:
             x.grid(row=0, column=col)
             col += 1
 
-        self.product_stats_text.grid(row=1, column=0, columnspan=3)
+        product_stats_label.grid(row=1, column=0)
 
         self.materials = []
         for x in material.material_list:
@@ -54,7 +56,8 @@ class MainWindow:
         self.chosen_material = tk.StringVar(self.main_window)
         self.chosen_material.set('Select a material')
         self.material_price_entry = tk.Entry(self.main_window)
-        self.material_menu = tk.OptionMenu(self.main_window, self.chosen_material, *self.materials)
+        self.material_menu = tk.OptionMenu(self.main_window, self.chosen_material, *self.materials,
+                                           command=self.display_price_material)
         self.material_hq_checkbox_var = tk.IntVar(self.main_window)
         self.material_hq_checkbox = tk.Checkbutton(self.main_window, text='HQ', variable=self.material_hq_checkbox_var)
         add_purchase = tk.Button(self.main_window, text='Add purchase')
@@ -62,7 +65,8 @@ class MainWindow:
         add_price_materials = tk.Button(self.main_window, text='Add price point')
         add_material_button = tk.Button(self.main_window, text='Add material')
 
-        self.material_stats_text = tk.Text(self.main_window, height=3, width=40)
+        self.material_price_var = tk.StringVar(self.main_window)
+        material_stats_label = tk.Label(self.main_window, textvariable=self.material_price_var)
 
         add_material_button.bind('<Button-1>', self.add_material_click)
         add_price_materials.bind('<Button-1>', self.add_material_price_click)
@@ -79,12 +83,24 @@ class MainWindow:
             x.grid(row=2, column=col)
             col += 1
 
-        self.material_stats_text.grid(row=3, column=0, columnspan=3)
+        material_stats_label.grid(row=3, column=0)
 
         save_button.grid(row=4, column=5)
         load_button.grid(row=5, column=5)
 
         self.main_window.mainloop()
+
+    def display_price_product(self, name):
+        try:
+            self.product_price_var.set(product.check_in_products(name).get_price())
+        except AttributeError:
+            self.product_price_var.set('0')
+
+    def display_price_material(self, name):
+        try:
+            self.material_price_var.set(material.check_in_materials(name).get_price())
+        except AttributeError:
+            self.material_price_var.set('0')
 
     def add_sale_click(self, event):
         if self.product_price_entry.get() is None:
