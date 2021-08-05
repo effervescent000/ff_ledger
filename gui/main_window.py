@@ -11,9 +11,12 @@ class MainWindow:
         self.xp = xp
         self.main_window = tk.Tk()
         self.new_product_window = None
-        # TODO add code to read an XML file and get a list of finished products from it
-        # for now I'm just adding a couple of products manually to populate the list
-        products = ['patricians coatee', 'fang necklace', 'horn earrings']
+
+        products = []
+        for x in product.product_list:
+            products.append(x.name)
+        if len(products) == 0:
+            products.append('None')
 
         self.chosen_product = tk.StringVar(self.main_window)
         self.chosen_product.set('Select a product')
@@ -22,8 +25,10 @@ class MainWindow:
         add_sale_button = tk.Button(self.main_window, text='Add sale')
         edit_entries_products = tk.Button(self.main_window, text='Edit entries')
         add_price_products = tk.Button(self.main_window, text='Add price point')
-        add_price_products.bind('<Button-1>', self.add_product_price_click)
+
         add_product_button = tk.Button(self.main_window, text='Add product')
+
+        add_price_products.bind('<Button-1>', self.add_product_price_click)
         add_product_button.bind('<Button-1>', self.add_product_click)
 
         product_menu.pack()
@@ -33,7 +38,12 @@ class MainWindow:
         add_price_products.pack()
         add_product_button.pack()
 
-        materials = ['iron ingot', 'bat fang', 'hard leather']
+        materials = []
+        for x in material.material_list:
+            materials.append(x.name)
+        if len(materials) == 0:
+            materials.append('None')
+
         self.chosen_material = tk.StringVar(self.main_window)
         self.chosen_material.set('Select a material')
         self.material_price_entry = tk.Entry(self.main_window)
@@ -41,18 +51,22 @@ class MainWindow:
         add_purchase = tk.Button(self.main_window, text='Add purchase')
         edit_entries_materials = tk.Button(self.main_window, text='Edit entries')
         add_price_materials = tk.Button(self.main_window, text='Add price point')
-        add_material = tk.Button(self.main_window, text='Add material')
+        add_material_button = tk.Button(self.main_window, text='Add material')
+
+        add_material_button.bind('<Button-1>', self.add_material_click)
+        add_price_materials.bind('<Button-1>', self.add_material_price_click)
 
         save_button = tk.Button(self.main_window, text='Save data')
-        save_button.bind('<Button-1>', self.save_button_click)
         load_button = tk.Button(self.main_window, text='Load data')
+
+        save_button.bind('<Button-1>', self.save_button_click)
 
         material_menu.pack()
         self.material_price_entry.pack()
         add_purchase.pack()
         edit_entries_materials.pack()
         add_price_materials.pack()
-        add_material.pack()
+        add_material_button.pack()
         save_button.pack()
         load_button.pack()
 
@@ -70,14 +84,23 @@ class MainWindow:
             if mat is not False:
                 mat.add_price_point(self.material_price_entry.get())
 
-    def add_new_product(self):
-        npw.NewProductWindow()
+    def match_product(self):
+        for x in product.product_list:
+            if self.chosen_product.get() == x.name:
+                return x
+        return False
 
-    def add_new_material(self):
+    def match_material(self):
+        for x in material.material_list:
+            if self.chosen_material.get() == x.name:
+                return x
+        return False
+
+    def add_material_click(self, event):
         nmw.NewMaterialWindow()
 
     def add_product_click(self, event):
-        self.add_new_product()
+        npw.NewProductWindow()
 
     def save_button_click(self, event):
         for x in product.product_list:

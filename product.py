@@ -14,6 +14,13 @@ def check_in_products(name):
                 return False
 
 
+def add_to_product_list(prod):
+    if check_in_products(prod.name) is False:
+        product_list.append(prod)
+    else:
+        print('Attempted to add item {} that is already in product list'.format(prod.name))
+
+
 class Product(item.Item):
     def __init__(self, name):
         super().__init__(name)
@@ -27,4 +34,3 @@ class Product(item.Item):
                 x.price_str = str(x.price)
                 x.time_str = str(x.time)
         self.sales_str = str(self.sales)
-

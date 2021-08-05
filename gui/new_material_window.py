@@ -22,9 +22,9 @@ class NewMaterialWindow:
     def save_new_material(self, event):
         material_result = material.check_in_materials(self.material_name)
         if material_result is not False and material_result is not None:
-            material_result.add_price_point(self.material_price)
+            material_result.add_price_point(self.material_price.get())
             print('Attempted to add an existing material to the list, updating price')
         else:
             new_material = material.Material(self.material_name.get())
-            new_material.add_price_point(self.material_price)
+            new_material.add_price_point(self.material_price.get())
             material.material_list.append(new_material)

@@ -22,9 +22,9 @@ class NewProductWindow:
     def save_new_product(self, event):
         product_result = product.check_in_products(self.product_name)
         if product_result is not False and product_result is not None:
-            product_result.add_price_point(self.product_price)
+            product_result.add_price_point(self.product_price.get())
             print('Attempted to add an existing product to the list, updating price')
         else:
             new_product = product.Product(self.product_name.get())
-            new_product.add_price_point(self.product_price)
+            new_product.add_price_point(self.product_price.get())
             product.product_list.append(new_product)

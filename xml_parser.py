@@ -13,19 +13,19 @@ class XmlParser:
 
     def add_product_to_xml(self, prod):
         new_prod = et.SubElement(self.root, 'product', {'name': prod.name})
-        sales = et.SubElement(new_prod, 'sales', {'sales': prod.sales_str})
-        prices = et.SubElement(new_prod, 'price_data')
+        sales = et.SubElement(new_prod, 'sales')
+        sales.text = str(prod.sales)
         for x in prod.price_data:
-            et.SubElement(prices, 'price', {'price': x.price_str})
-            et.SubElement(prices, 'time', {'time': x.time_str})
+            price_element = et.SubElement(new_prod, 'price', {'time': x.time_str})
+            price_element.text = str(x.price)
 
     def add_material_to_xml(self, mat):
         new_mat = et.SubElement(self.root, 'material', {'name': mat.name})
-        purchases = et.SubElement(new_mat, 'purchases', {'number': mat.purchases_str})
-        prices = et.SubElement(new_mat, 'price_data')
+        purchases = et.SubElement(new_mat, 'purchases')
+        purchases.text = str(mat.purchases)
         for x in mat.price_data:
-            et.SubElement(prices, 'price', {'price': x.price_str})
-            et.SubElement(prices, 'time', {'time': x.time_str})
+            price_element = et.SubElement(new_mat, 'price', {'time': x.time_str})
+            price_element.text = str(x.price)
 
     def populate_items(self):
         for child in self.root:
@@ -39,23 +39,22 @@ class XmlParser:
     def get_product_from_xml(self, node):
         new_product = product.Product(node.attrib['name'])
         for child in node:
-            if child.tag == 'price_data':
-                child_price = None
-                child_time = None
-                for x in child:
-                    if x.tag == 'price':
-                        child_price = x.attrib['price']
-                    else:
-                        child.time = x.attrib['time']
-                new_product.add_price_point(int(child_price),datetime.strptime(child_time,'%x %X'))
+            if child.tag == 'price':
+                child_price = int(child.text)
+                child_time = datetime.strptime(child.attrib['time'], '%Y-%m-%d %H:%M:%S.%f')
+                new_product.add_price_point(child_price, child_time)
+        product.add_to_product_list(new_product)
 
     def get_material_from_xml(self, node):
         new_material = material.Material(node.attrib['name'])
         for child in node:
-            if child.tag == 'price_data':
-                for price in child:
-                    new_material.add_price_point(int(price[0].value), datetime.strptime(price[1].value))
+            if child.tag == 'price':
+                child_price = int(child.text)
+                child_time = datetime.strptime(child.attrib['time'], '%Y-%m-%d %H:%M:%S.%f')
+                new_material.add_price_point(child_price, child_time)
+        material.add_to_material_list(new_material)
 
     def save_xml(self):
         print('Saving...')
         self.tree.write(self.name)
+        print('Done saving!')

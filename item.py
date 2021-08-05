@@ -10,6 +10,8 @@ class Item:
         self.price = 0
         self.price_str = None
         self.price_data = []
+        self.reagents = {}
+        self.craftable = None  # should be true or false
 
     def add_price_point(self, num, time=datetime.datetime.now()):
         self.price_data.append(price.Price(num, time))

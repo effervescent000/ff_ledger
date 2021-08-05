@@ -11,6 +11,13 @@ def check_in_materials(name):
             return False
 
 
+def add_to_material_list(mat):
+    if check_in_materials(mat.name) is False:
+        material_list.append(mat)
+    else:
+        print('Attempted to add item {} that is already in material list'.format(mat.name))
+
+
 class Material(item.Item):
     def __init__(self, name):
         # TODO include the cost to craft, buy on AH, or buy from vendor and choose the cheapest option
@@ -26,4 +33,3 @@ class Material(item.Item):
                 x.price_str = str(x.price)
                 x.time_str = str(x.time)
         self.purchases_str = str(self.purchases)
-
