@@ -33,7 +33,7 @@ class MainWindow:
         add_crafting_mats_product_button = tk.Button(self.main_window, text='Add crafting mats')
 
         self.product_price_var = tk.StringVar(self.main_window)
-        product_stats_label = tk.Label(self.main_window, textvariable=self.product_price_var)
+        product_price_label = tk.Label(self.main_window, textvariable=self.product_price_var)
 
         add_price_products.bind('<Button-1>', self.add_product_price_click)
         add_sale_button.bind('<Button-1>', self.add_sale_click)
@@ -48,7 +48,7 @@ class MainWindow:
             x.grid(row=0, column=col)
             col += 1
 
-        product_stats_label.grid(row=1, column=0)
+        product_price_label.grid(row=1, column=0)
 
         self.materials = [x.name for x in material.material_list]
         self.materials.sort()
@@ -68,7 +68,7 @@ class MainWindow:
         add_crafting_mats_material_button = tk.Button(self.main_window, text='Add crafting mats')
 
         self.material_price_var = tk.StringVar(self.main_window)
-        material_stats_label = tk.Label(self.main_window, textvariable=self.material_price_var)
+        material_price_label = tk.Label(self.main_window, textvariable=self.material_price_var)
 
         add_material_button.bind('<Button-1>', self.add_material_click)
         add_price_materials.bind('<Button-1>', self.add_material_price_click)
@@ -87,7 +87,7 @@ class MainWindow:
             x.grid(row=2, column=col)
             col += 1
 
-        material_stats_label.grid(row=3, column=0)
+        material_price_label.grid(row=3, column=0)
 
         save_button.grid(row=4, column=5)
         load_button.grid(row=5, column=5)
