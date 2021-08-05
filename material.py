@@ -4,11 +4,14 @@ material_list = []
 
 
 def check_in_materials(name):
-    for x in material_list:
-        if name == x.name:
-            return x
-        else:
-            return False
+    if len(material_list) == 0:
+        return False
+    else:
+        for x in material_list:
+            if name == x.name:
+                return x
+            else:
+                return False
 
 
 def add_to_material_list(mat):
