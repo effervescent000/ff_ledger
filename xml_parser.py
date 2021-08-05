@@ -7,9 +7,13 @@ from datetime import datetime
 class XmlParser:
     def __init__(self, name):
         self.name = name
-        self.tree = et.parse(name)
-        self.root = self.tree.getroot()
-        self.populate_items()
+        try:
+            self.tree = et.parse(name)
+            self.root = self.tree.getroot()
+            self.populate_items()
+        except et.ParseError:
+            self.root = et.Element('data')
+            self.tree = et.ElementTree(self.root)
 
     def add_product_to_xml(self, prod):
         new_prod = et.SubElement(self.root, 'product', {'name': prod.name})
@@ -35,6 +39,10 @@ class XmlParser:
                 self.get_material_from_xml(child)
             else:
                 print('Invalid tag {} passed to populate_items()'.format(child.tag))
+        # now that we're done with the tree, delete it. Just nuke it from orbit.
+        self.root.clear()
+        # TODO figure out how to properly clear the tree to avoid duplicates, leaving this as a todo right now because
+        #  I don't think it's breaking anything
 
     def get_product_from_xml(self, node):
         new_product = product.Product(node.attrib['name'])
@@ -56,5 +64,9 @@ class XmlParser:
 
     def save_xml(self):
         print('Saving...')
+        # first, delete the old file so we aren't just appending to it. Commenting this out b/c I'm not sure this was
+        # actually the problem
+        # with open(self.name, 'w') as datafile:
+        #     datafile.write('<?xml version="1.0" ?>')
         self.tree.write(self.name)
         print('Done saving!')
