@@ -48,7 +48,10 @@ class XmlParser:
         new_product = product.Product(node.attrib['name'])
         for child in node:
             if child.tag == 'price':
-                child_price = int(child.text)
+                if child.text is None:
+                    child_price = 0
+                else:
+                    child_price = int(child.text)
                 child_time = datetime.strptime(child.attrib['time'], '%Y-%m-%d %H:%M:%S.%f')
                 new_product.add_price_point(child_price, child_time)
         product.add_to_product_list(new_product)
@@ -57,7 +60,10 @@ class XmlParser:
         new_material = material.Material(node.attrib['name'])
         for child in node:
             if child.tag == 'price':
-                child_price = int(child.text)
+                if child.text is None:
+                    child_price = 0
+                else:
+                    child_price = int(child.text)
                 child_time = datetime.strptime(child.attrib['time'], '%Y-%m-%d %H:%M:%S.%f')
                 new_material.add_price_point(child_price, child_time)
         material.add_to_material_list(new_material)
