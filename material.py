@@ -10,8 +10,7 @@ def check_in_materials(name):
         for x in material_list:
             if name == x.name:
                 return x
-            else:
-                return False
+        return False
 
 
 def add_to_material_list(mat):
