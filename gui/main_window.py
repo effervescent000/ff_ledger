@@ -10,18 +10,19 @@ class MainWindow:
     def __init__(self, xp):
         self.xp = xp
         self.main_window = tk.Tk()
-        self.new_product_window = None
 
-        products = []
+        self.products = []
         for x in product.product_list:
-            products.append(x.name)
-        if len(products) == 0:
-            products.append('None')
+            self.products.append(x.name)
+        if len(self.products) == 0:
+            self.products.append('None')
+
+        # TODO figure out how to get the optionmenus to update without having to restart the application
 
         self.chosen_product = tk.StringVar(self.main_window)
         self.chosen_product.set('Select a product')
         self.product_price_entry = tk.Entry(self.main_window)
-        product_menu = tk.OptionMenu(self.main_window, self.chosen_product, *products)
+        self.product_menu = tk.OptionMenu(self.main_window, self.chosen_product, *self.products)
         add_sale_button = tk.Button(self.main_window, text='Add sale')
         edit_entries_products = tk.Button(self.main_window, text='Edit entries')
         add_price_products = tk.Button(self.main_window, text='Add price point')
@@ -29,25 +30,26 @@ class MainWindow:
         add_product_button = tk.Button(self.main_window, text='Add product')
 
         add_price_products.bind('<Button-1>', self.add_product_price_click)
+        add_sale_button.bind('<Button-1>', self.add_sale_click)
         add_product_button.bind('<Button-1>', self.add_product_click)
 
-        product_menu.grid(row=0, column=0)
+        self.product_menu.grid(row=0, column=0)
         self.product_price_entry.grid(row=0, column=1)
         add_sale_button.grid(row=0, column=2)
         edit_entries_products.grid(row=0, column=3)
         add_price_products.grid(row=0, column=4)
         add_product_button.grid(row=0, column=5)
 
-        materials = []
+        self.materials = []
         for x in material.material_list:
-            materials.append(x.name)
-        if len(materials) == 0:
-            materials.append('None')
+            self.materials.append(x.name)
+        if len(self.materials) == 0:
+            self.materials.append('None')
 
         self.chosen_material = tk.StringVar(self.main_window)
         self.chosen_material.set('Select a material')
         self.material_price_entry = tk.Entry(self.main_window)
-        material_menu = tk.OptionMenu(self.main_window, self.chosen_material, *materials)
+        self.material_menu = tk.OptionMenu(self.main_window, self.chosen_material, *self.materials)
         add_purchase = tk.Button(self.main_window, text='Add purchase')
         edit_entries_materials = tk.Button(self.main_window, text='Edit entries')
         add_price_materials = tk.Button(self.main_window, text='Add price point')
@@ -61,7 +63,7 @@ class MainWindow:
 
         save_button.bind('<Button-1>', self.save_button_click)
 
-        material_menu.grid(row=1, column=0)
+        self.material_menu.grid(row=1, column=0)
         self.material_price_entry.grid(row=1, column=1)
         add_purchase.grid(row=1, column=2)
         edit_entries_materials.grid(row=1, column=3)
@@ -72,6 +74,10 @@ class MainWindow:
         load_button.grid(row=3, column=5)
 
         self.main_window.mainloop()
+
+    def add_sale_click(self, event):
+        self.match_product().sales += 1
+        print('Sale added successfully')
 
     def add_product_price_click(self, event):
         if self.chosen_product is not None and self.product_price_entry.get() is not None:
@@ -110,4 +116,6 @@ class MainWindow:
         for x in material.material_list:
             x.prep_for_records()
             self.xp.add_material_to_xml(x)
+
         self.xp.save_xml()
+
