@@ -1,3 +1,5 @@
+import datetime
+
 import item
 
 product_list = []
@@ -26,6 +28,8 @@ class Product(item.Item):
         self.sales = 0
         self.sales_str = None
         self.profit = 0
+        self.stock_data = []
+        self.sales_data = []
 
     def prep_for_records(self):
         self.price_str = str(self.price)
@@ -34,3 +38,21 @@ class Product(item.Item):
                 x.price_str = str(x.price)
                 x.time_str = str(x.time)
         self.sales_str = str(self.sales)
+
+    def add_stock(self, time=datetime.datetime.now()):
+        """
+        Add a single unit of stock to the product, at the time passed (defaults to when the method is called). Also
+        prunes old stock records.
+        :param time:
+        :return: None
+        """
+        self.stock += 1
+        self.stock_data.append(time)
+        if len(self.stock_data) > 10:
+            self.stock_data.pop(0)
+
+    def add_sale(self, time=datetime.datetime.now()):
+        self.stock += 1
+        self.sales_data.append(time)
+        if len(self.sales_data) > 10:
+            self.sales_data.pop(0)
