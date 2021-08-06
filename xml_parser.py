@@ -7,6 +7,7 @@ from datetime import datetime
 class XmlParser:
     def __init__(self, name):
         self.name = name
+        self.time_format = '%Y-%m-%d %H:%M:%S.%f'
         try:
             self.tree = et.parse(name)
             self.root = self.tree.getroot()
@@ -22,8 +23,16 @@ class XmlParser:
             new_prod.text = prod.name
             sales = et.SubElement(new_prod, 'sales')
             sales.text = str(prod.sales)
+            if len(prod.sales_data) > 0:
+                for x in prod.sales_data:
+                    new_sale = et.SubElement(sales, 'time')
+                    new_sale.text = str(x)
             stock = et.SubElement(new_prod, 'stock')
             stock.text = str(prod.stock)
+            if len(prod.stock_data) > 0:
+                for x in prod.stock_data:
+                    new_stock = et.SubElement(stock, 'time')
+                    new_stock.text = str(x)
             for x in prod.price_data:
                 price_element = et.SubElement(new_prod, 'price', {'time': x.time_str})
                 price_element.text = str(x.price)
@@ -65,7 +74,7 @@ class XmlParser:
                 child_price = 0
             else:
                 child_price = int(child.text)
-            child_time = datetime.strptime(child.attrib['time'], '%Y-%m-%d %H:%M:%S.%f')
+            child_time = datetime.strptime(child.attrib['time'], self.time_format)
             new_product.add_price_point(child_price, child_time)
         for child in node.findall('reagent'):
             if child.text is not None:
@@ -74,10 +83,13 @@ class XmlParser:
         sales = node.find('sales')
         if sales is not None:
             new_product.sales = int(sales.text)
+            for child in sales:
+                new_product.sales_data.append(datetime.strptime(child.text, self.time_format))
         stock = node.find('stock')
         if stock is not None:
             new_product.stock = int(stock.text)
-
+            for child in stock:
+                new_product.stock_data.append(datetime.strptime(child.text, self.time_format))
 
     def get_material_from_xml(self, node):
         new_material = material.Material(node.text)
@@ -86,7 +98,7 @@ class XmlParser:
                 child_price = 0
             else:
                 child_price = int(child.text)
-            child_time = datetime.strptime(child.attrib['time'], '%Y-%m-%d %H:%M:%S.%f')
+            child_time = datetime.strptime(child.attrib['time'], self.time_format)
             new_material.add_price_point(child_price, child_time)
         for child in node.findall('reagent'):
             if child.text is not None:

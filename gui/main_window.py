@@ -170,14 +170,13 @@ class MainWindow:
             print('Please enter a sale value!')
         else:
             prod = product.check_in_products(self.product_combo.get())
-            prod.sales += 1
-            prod.stock -= 1
+            prod.add_sale()
             prod.add_price_point(int(self.product_price_entry.get()) / .95)
             self.display_stats_product()
 
     def add_stock_click(self, event):
         prod = product.check_in_products(self.product_combo.get())
-        prod.stock += 1
+        prod.add_stock()
         self.display_stats_product()
 
     def add_product_price_click(self, event):
