@@ -6,12 +6,14 @@ import gui.new_product_window as npw
 import gui.crafting_mats_window as cmw
 import material
 import product
+import crafting_calc
 
 
 class MainWindow:
     def __init__(self, xp):
         self.xp = xp
         self.main_window = tk.Tk()
+        self.cc = crafting_calc.CraftingCalc()
 
         self.products = [x.name for x in product.product_list]
         self.products.sort()
@@ -122,7 +124,7 @@ class MainWindow:
         if len(prod.reagents) == 0:
             self.product_crafting_var.set('0')
         else:
-            self.product_crafting_var.set(self.drill_down(prod))
+            self.product_crafting_var.set(self.cc.drill_down(prod))
         self.product_stock_var.set(prod.stock)
 
     def display_stats_material(self, event=None):
@@ -135,22 +137,7 @@ class MainWindow:
         if len(mat.reagents) == 0:
             self.material_crafting_var.set('0')
         else:
-            self.material_crafting_var.set(self.drill_down(mat))
-
-    def drill_down(self, item):
-        crafting_cost = 0
-        for x in item.reagents.items():
-            mat = material.check_in_materials(x[0])
-            price = mat.get_price()
-            if price == 0:
-                print('Material {} missing price data'.format(x[0]))
-                return None
-            else:
-                if len(mat.reagents) > 0:
-                    crafting_cost += self.drill_down(mat) * float(x[1])
-                else:
-                    crafting_cost += price * float(x[1])
-        return crafting_cost
+            self.material_crafting_var.set(self.cc.drill_down(mat))
 
     def add_sale_click(self, event):
         if self.product_price_entry.get() is '':
