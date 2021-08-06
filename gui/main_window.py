@@ -22,25 +22,27 @@ class MainWindow:
 
         # TODO figure out how to get the optionmenus to update without having to restart the application
 
-        self.chosen_product = tk.StringVar(self.main_window)
-        self.chosen_product.set('Select a product')
-        self.product_price_entry = tk.Entry(self.main_window)
-        self.product_combo = ttk.Combobox(self.main_window, textvariable=self.chosen_product, values=self.products)
-        self.product_hq_checkbox_var = tk.IntVar(self.main_window)
-        self.product_hq_checkbox = tk.Checkbutton(self.main_window, text='HQ', variable=self.product_hq_checkbox_var)
-        add_sale_button = tk.Button(self.main_window, text='Add sale')
-        add_stock_button = tk.Button(self.main_window, text='Add stock')
-        edit_entries_products = tk.Button(self.main_window, text='Edit entries')
-        add_price_products = tk.Button(self.main_window, text='Add price point')
-        add_product_button = tk.Button(self.main_window, text='Add product')
-        add_crafting_mats_product_button = tk.Button(self.main_window, text='Add crafting mats')
+        self.upper_frame = tk.Frame(self.main_window)
 
-        self.product_price_var = tk.StringVar(self.main_window)
-        product_price_label = tk.Label(self.main_window, textvariable=self.product_price_var)
-        self.product_crafting_var = tk.StringVar(self.main_window)
-        product_crafting_label = tk.Label(self.main_window, textvariable=self.product_crafting_var)
+        self.chosen_product = tk.StringVar(self.upper_frame)
+        self.chosen_product.set('Select a product')
+        self.product_price_entry = tk.Entry(self.upper_frame)
+        self.product_combo = ttk.Combobox(self.upper_frame, textvariable=self.chosen_product, values=self.products)
+        self.product_hq_checkbox_var = tk.IntVar(self.upper_frame)
+        self.product_hq_checkbox = tk.Checkbutton(self.upper_frame, text='HQ', variable=self.product_hq_checkbox_var)
+        add_sale_button = tk.Button(self.upper_frame, text='Add sale')
+        add_stock_button = tk.Button(self.upper_frame, text='Add stock')
+        edit_entries_products = tk.Button(self.upper_frame, text='Edit entries')
+        add_price_products = tk.Button(self.upper_frame, text='Add price point')
+        add_product_button = tk.Button(self.upper_frame, text='Add product')
+        add_crafting_mats_product_button = tk.Button(self.upper_frame, text='Add crafting mats')
+
+        self.product_price_var = tk.StringVar(self.upper_frame)
+        product_price_label = tk.Label(self.upper_frame, textvariable=self.product_price_var)
+        self.product_crafting_var = tk.StringVar(self.upper_frame)
+        product_crafting_label = tk.Label(self.upper_frame, textvariable=self.product_crafting_var)
         self.product_stock_var = tk.StringVar()
-        product_stock_label = tk.Label(self.main_window, textvariable=self.product_stock_var)
+        product_stock_label = tk.Label(self.upper_frame, textvariable=self.product_stock_var)
 
         add_price_products.bind('<Button-1>', self.add_product_price_click)
         add_sale_button.bind('<Button-1>', self.add_sale_click)
@@ -66,30 +68,31 @@ class MainWindow:
         if len(self.materials) == 0:
             self.materials.append('None')
 
-        self.chosen_material = tk.StringVar(self.main_window)
+        self.chosen_material = tk.StringVar(self.upper_frame)
         self.chosen_material.set('Select a material')
-        self.material_price_entry = tk.Entry(self.main_window)
-        self.material_combo = ttk.Combobox(self.main_window, textvariable=self.chosen_material, values=self.materials)
-        self.material_hq_checkbox_var = tk.IntVar(self.main_window)
-        self.material_hq_checkbox = tk.Checkbutton(self.main_window, text='HQ', variable=self.material_hq_checkbox_var)
-        add_purchase = tk.Button(self.main_window, text='Add purchase')
-        edit_entries_materials = tk.Button(self.main_window, text='Edit entries')
-        add_price_materials = tk.Button(self.main_window, text='Add price point')
-        add_material_button = tk.Button(self.main_window, text='Add material')
-        add_crafting_mats_material_button = tk.Button(self.main_window, text='Add crafting mats')
+        self.material_price_entry = tk.Entry(self.upper_frame)
+        self.material_combo = ttk.Combobox(self.upper_frame, textvariable=self.chosen_material, values=self.materials)
+        self.material_hq_checkbox_var = tk.IntVar(self.upper_frame)
+        self.material_hq_checkbox = tk.Checkbutton(self.upper_frame, text='HQ', variable=self.material_hq_checkbox_var)
+        add_purchase = tk.Button(self.upper_frame, text='Add purchase')
+        edit_entries_materials = tk.Button(self.upper_frame, text='Edit entries')
+        add_price_materials = tk.Button(self.upper_frame, text='Add price point')
+        add_material_button = tk.Button(self.upper_frame, text='Add material')
+        add_crafting_mats_material_button = tk.Button(self.upper_frame, text='Add crafting mats')
 
-        self.material_price_var = tk.StringVar(self.main_window)
-        material_price_label = tk.Label(self.main_window, textvariable=self.material_price_var)
-        self.material_crafting_var = tk.StringVar(self.main_window)
-        material_crafting_label = tk.Label(self.main_window, textvariable=self.material_crafting_var)
+        self.material_price_var = tk.StringVar()
+        material_price_label = tk.Label(self.upper_frame, textvariable=self.material_price_var)
+        self.material_crafting_var = tk.StringVar()
+        material_crafting_label = tk.Label(self.upper_frame, textvariable=self.material_crafting_var)
 
         add_material_button.bind('<Button-1>', self.add_material_click)
         add_price_materials.bind('<Button-1>', self.add_material_price_click)
         add_crafting_mats_material_button.bind('<Button-1>', self.crafting_mats_material_click)
         self.material_combo.bind('<<ComboboxSelected>>', self.display_stats_material)
 
-        save_button = tk.Button(self.main_window, text='Save data')
-        load_button = tk.Button(self.main_window, text='Load data')
+        self.data_frame = tk.Frame(self.main_window)
+        save_button = tk.Button(self.data_frame, text='Save data')
+        load_button = tk.Button(self.data_frame, text='Load data')
 
         save_button.bind('<Button-1>', self.save_button_click)
 
@@ -107,7 +110,17 @@ class MainWindow:
         save_button.grid(row=4, column=5)
         load_button.grid(row=5, column=5)
 
+        # now beginning stock display
+        self.stock_frame = tk.Frame(self.main_window)
+
+
+        # place frames
+        self.upper_frame.pack()
+        self.stock_frame.pack()
+        self.data_frame.pack()
+
         self.main_window.mainloop()
+
 
     def crafting_mats_product_click(self, event):
         cmw.CraftingMatsWindow(product.check_in_products(self.chosen_product.get()))
