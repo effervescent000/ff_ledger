@@ -27,3 +27,40 @@ class CraftingCalc:
                 else:
                     crafting_cost += price * float(x[1])
         return crafting_cost
+
+    def get_crafts(self, num):
+        """
+        Returns a list of items to craft, up to the length of num, preferring ones that have sold before and that are
+        not in stock already.
+
+        :param num: The number of items to craft/the length of the list (1-indexed).
+        :return: The list of items to craft.
+        """
+        temp_craft_list = []
+        backup_craft_list = []
+        craft_list = []
+        for x in product.product_list:
+            if x.stock <= 0:
+                # debug check/message to be removed eventually
+                if x.stock < 0:
+                    print('{} has < 0 stock'.format(x.name))
+                if x.sales > 0:
+                    temp_craft_list.append(x)
+                else:
+                    backup_craft_list.append(x)
+
+        temp_craft_list.sort(key=self.get_profit, reverse=True)
+        backup_craft_list.sort(key=self.get_profit, reverse=True)
+        if len(temp_craft_list) > num:
+            for i in range(num):
+                craft_list.append(temp_craft_list[i - 1])
+        else:
+            print('temp_craft_list too short, adding products without sales')
+            for i in range(num - len(craft_list)):
+                craft_list.append(backup_craft_list[i])
+
+        return craft_list
+
+    def get_profit(self, item):
+        item.profit = item.get_price() - self.get_crafting_cost(item)
+        return item.profit

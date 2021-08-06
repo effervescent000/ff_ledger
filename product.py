@@ -25,6 +25,7 @@ class Product(item.Item):
         super().__init__(name)
         self.sales = 0
         self.sales_str = None
+        self.profit = 0
 
     def prep_for_records(self):
         self.price_str = str(self.price)

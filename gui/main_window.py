@@ -90,12 +90,6 @@ class MainWindow:
         add_crafting_mats_material_button.bind('<Button-1>', self.crafting_mats_material_click)
         self.material_combo.bind('<<ComboboxSelected>>', self.display_stats_material)
 
-        self.data_frame = tk.Frame(self.main_window)
-        save_button = tk.Button(self.data_frame, text='Save data')
-        load_button = tk.Button(self.data_frame, text='Load data')
-
-        save_button.bind('<Button-1>', self.save_button_click)
-
         material_widgets = [self.material_combo, self.material_hq_checkbox, self.material_price_entry, add_purchase,
                             edit_entries_materials, add_price_materials, add_material_button,
                             add_crafting_mats_material_button]
@@ -107,8 +101,17 @@ class MainWindow:
         material_price_label.grid(row=3, column=0)
         material_crafting_label.grid(row=3, column=2)
 
+        self.data_frame = tk.Frame(self.main_window)
+        save_button = tk.Button(self.data_frame, text='Save data')
+        load_button = tk.Button(self.data_frame, text='Load data')
+        craft_queue_button = tk.Button(self.data_frame, text='Crafting queue')
+
+        save_button.bind('<Button-1>', self.save_button_click)
+        craft_queue_button.bind('<Button-1>', self.craft_queue_button_click)
+
         save_button.grid(row=4, column=5)
         load_button.grid(row=5, column=5)
+        craft_queue_button.grid(row=6, column=5)
 
         # now beginning stock display
         self.stock_frame = tk.Frame(self.main_window)
@@ -125,6 +128,12 @@ class MainWindow:
         self.data_frame.pack()
 
         self.main_window.mainloop()
+
+    def craft_queue_button_click(self, event):
+        # TODO add a way to select the number of crafts from the GUI
+        craft_queue = self.cc.get_crafts(5)
+        for x in craft_queue:
+            print('{} for {} gil'.format(x.name, x.profit))
 
     def crafting_mats_product_click(self, event):
         cmw.CraftingMatsWindow(product.check_in_products(self.chosen_product.get()))
