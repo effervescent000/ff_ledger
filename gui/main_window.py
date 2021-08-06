@@ -143,6 +143,7 @@ class MainWindow:
             mat = material.check_in_materials(x[0])
             price = mat.get_price()
             if price == 0:
+                print('Material {} missing price data'.format(x[0]))
                 return None
             else:
                 if len(mat.reagents) > 0:
