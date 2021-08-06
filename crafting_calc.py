@@ -7,7 +7,10 @@ class CraftingCalc:
         pass
 
     def get_stock(self):
-        stock = [x for x in product.product_list if x.stock > 0]
+        stock = []
+        for x in product.product_list:
+            if x.stock > 0:
+                stock.append((x.stock, x.name))
         return stock
 
     def get_crafting_cost(self, item):

@@ -112,7 +112,12 @@ class MainWindow:
 
         # now beginning stock display
         self.stock_frame = tk.Frame(self.main_window)
-
+        self.stock_list = self.cc.get_stock()
+        for i in range(len(self.stock_list)):
+            for j in range(len(self.stock_list[1])):
+                e = tk.Entry(self.stock_frame)
+                e.grid(row=i, column=j)
+                e.insert(0, self.stock_list[i][j])
 
         # place frames
         self.upper_frame.pack()
@@ -120,7 +125,6 @@ class MainWindow:
         self.data_frame.pack()
 
         self.main_window.mainloop()
-
 
     def crafting_mats_product_click(self, event):
         cmw.CraftingMatsWindow(product.check_in_products(self.chosen_product.get()))
