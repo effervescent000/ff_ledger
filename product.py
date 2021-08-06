@@ -53,6 +53,7 @@ class Product(item.Item):
 
     def add_sale(self, time=datetime.datetime.now()):
         self.stock -= 1
+        self.sales += 1
         self.sales_data.append(time)
         if len(self.sales_data) > 10:
             self.sales_data.pop(0)
