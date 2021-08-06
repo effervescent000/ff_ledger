@@ -124,7 +124,7 @@ class MainWindow:
         if len(prod.reagents) == 0:
             self.product_crafting_var.set('0')
         else:
-            self.product_crafting_var.set(self.cc.drill_down(prod))
+            self.product_crafting_var.set(self.cc.get_crafting_cost(prod))
         self.product_stock_var.set(prod.stock)
 
     def display_stats_material(self, event=None):
@@ -137,7 +137,7 @@ class MainWindow:
         if len(mat.reagents) == 0:
             self.material_crafting_var.set('0')
         else:
-            self.material_crafting_var.set(self.cc.drill_down(mat))
+            self.material_crafting_var.set(self.cc.get_crafting_cost(mat))
 
     def add_sale_click(self, event):
         if self.product_price_entry.get() is '':

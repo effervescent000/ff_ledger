@@ -10,7 +10,7 @@ class CraftingCalc:
         stock = [x for x in product.product_list if x.stock > 0]
         return stock
 
-    def drill_down(self, item):
+    def get_crafting_cost(self, item):
         crafting_cost = 0
         for x in item.reagents.items():
             mat = material.check_in_materials(x[0])
@@ -20,7 +20,7 @@ class CraftingCalc:
                 return None
             else:
                 if len(mat.reagents) > 0:
-                    crafting_cost += self.drill_down(mat) * float(x[1])
+                    crafting_cost += self.get_crafting_cost(mat) * float(x[1])
                 else:
                     crafting_cost += price * float(x[1])
         return crafting_cost
