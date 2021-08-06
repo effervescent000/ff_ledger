@@ -51,10 +51,12 @@ class CraftingCalc:
 
         temp_craft_list.sort(key=self.get_profit, reverse=True)
         backup_craft_list.sort(key=self.get_profit, reverse=True)
-        if len(temp_craft_list) > num:
+        if len(temp_craft_list) < num:
+            craft_list = [x for x in temp_craft_list]
+        else:
             for i in range(num):
                 craft_list.append(temp_craft_list[i - 1])
-        else:
+        if len(craft_list) < num:
             print('temp_craft_list too short, adding products without sales')
             for i in range(num - len(craft_list)):
                 craft_list.append(backup_craft_list[i])
