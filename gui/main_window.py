@@ -16,6 +16,8 @@ class MainWindow:
         self.main_window = tk.Tk()
         self.cc = crafting_calc.CraftingCalc()
 
+        # TODO implement a way to export crafting tree w/o sales/stocking data
+
         self.products = [x.name for x in product.product_list]
         self.products.sort()
         if len(self.products) == 0:
