@@ -32,6 +32,9 @@ class Product(item.Item):
         self.sales_data = []
 
     def prep_for_records(self):
+        """
+        Converts certain numeric variables to strings for use in the xml_parser.
+        """
         self.price_str = str(self.price)
         if len(self.price_data) > 0:
             for x in self.price_data:
@@ -44,7 +47,6 @@ class Product(item.Item):
         Add a single unit of stock to the product, at the time passed (defaults to when the method is called). Also
         prunes old stock records.
         :param time:
-        :return: None
         """
         self.stock += 1
         self.stock_data.append(time)
@@ -52,6 +54,11 @@ class Product(item.Item):
             self.stock_data.pop(0)
 
     def add_sale(self, time=datetime.datetime.now()):
+        """
+        Adds a single sale to the product and subtracts a unit of stack, at the time passed (defaults to when the
+        method is called. Also prunes old sale records.
+        :param time:
+        """
         self.stock -= 1
         self.sales += 1
         self.sales_data.append(time)
