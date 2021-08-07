@@ -32,16 +32,17 @@ class CraftingMatsWindow:
         self.item_4_var = tk.StringVar(self.crafting_mats_window)
         self.item_5_var = tk.StringVar(self.crafting_mats_window)
 
-        self.item_1_combo = ttk.Combobox(self.crafting_mats_window, textvariable=self.item_1_var,
-                                         values=option_list).grid(row=0, column=1)
-        self.item_2_combo = ttk.Combobox(self.crafting_mats_window, textvariable=self.item_2_var,
-                                         values=option_list).grid(row=1, column=1)
-        self.item_3_combo = ttk.Combobox(self.crafting_mats_window, textvariable=self.item_3_var,
-                                         values=option_list).grid(row=2, column=1)
-        self.item_4_combo = ttk.Combobox(self.crafting_mats_window, textvariable=self.item_4_var,
-                                         values=option_list).grid(row=3, column=1)
-        self.item_5_combo = ttk.Combobox(self.crafting_mats_window, textvariable=self.item_5_var,
-                                         values=option_list).grid(row=4, column=1)
+        self.item_1_combo = ttk.Combobox(self.crafting_mats_window, textvariable=self.item_1_var, values=option_list)
+        self.item_2_combo = ttk.Combobox(self.crafting_mats_window, textvariable=self.item_2_var, values=option_list)
+        self.item_3_combo = ttk.Combobox(self.crafting_mats_window, textvariable=self.item_3_var, values=option_list)
+        self.item_4_combo = ttk.Combobox(self.crafting_mats_window, textvariable=self.item_4_var, values=option_list)
+        self.item_5_combo = ttk.Combobox(self.crafting_mats_window, textvariable=self.item_5_var, values=option_list)
+
+        item_widgets = [self.item_1_combo, self.item_2_combo, self.item_3_combo, self.item_4_combo, self.item_5_combo]
+        r = 0
+        for x in item_widgets:
+            x.grid(row=r, column=1)
+            r += 1
 
         self.ok_button = tk.Button(self.crafting_mats_window, text='Ok')
         self.cancel_button = tk.Button(self.crafting_mats_window, text='Cancel',
