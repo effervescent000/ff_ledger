@@ -126,9 +126,9 @@ class MainWindow:
                 e.insert(0, self.stock_list[i][j])
 
         # place frames
-        self.upper_frame.pack()
-        self.stock_frame.pack()
-        self.data_frame.pack()
+        self.upper_frame.grid(row=0, column=0, columnspan=2)
+        self.stock_frame.grid(row=1, column=0)
+        self.data_frame.grid(row=1, column=1)
 
         self.main_window.mainloop()
 
