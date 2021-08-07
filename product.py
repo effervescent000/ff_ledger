@@ -6,6 +6,11 @@ product_list = []
 
 
 def check_in_products(name):
+    """
+    Checks if an item is in the product_list.
+    :param name: String representing the product.
+    :return: The product that shares the string (or False if no matching product is found).
+    """
     if len(product_list) == 0:
         return False
     else:
