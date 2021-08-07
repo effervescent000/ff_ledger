@@ -53,7 +53,20 @@ class CraftingMatsWindow:
 
         self.ok_button.bind('<Button-1>', self.save_button_click)
 
+        # populate crafting reagents if this item already has them assigned
+        if len(self.root_item.reagents) > 0:
+            i = 0
+            for x in self.root_item.reagents.items():
+                quantity_widgets[i].insert(0, str(x[1]))
+                item_widgets[i].insert(0, x[0])
+                i += 1
+
     def save_button_click(self, event):
+        # first, if the item already has crafting reagents set, purge them to avoid duplicates
+        if len(self.root_item.reagents) > 0:
+            self.root_item.reagents = {}
+
+        # now set reagents as normal
         if self.item_1_var.get() is not '':
             self.add_crafting_reagent(1)
         if self.item_2_var.get() is not '':
