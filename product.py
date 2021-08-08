@@ -65,7 +65,8 @@ class Product(item.Item):
         method is called. Also prunes old sale records.
         :param time:
         """
-        self.stock -= 1
+        if self.stock > 0:
+            self.stock -= 1
         self.sales += 1
         self.sales_data.append(time)
         if len(self.sales_data) > 10:
