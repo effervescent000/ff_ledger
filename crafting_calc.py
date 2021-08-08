@@ -23,7 +23,7 @@ class CraftingCalc:
                 if price == 0:
                     print('Uncraftable material {} missing price data'.format(x[0]))
                 else:
-                    crafting_cost += price
+                    crafting_cost += price * float(x[1])
             else:
                 if len(mat.reagents) > 0:
                     crafting_cost += self.get_crafting_cost(mat) * float(x[1])
