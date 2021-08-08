@@ -19,14 +19,18 @@ class CraftingCalc:
         for x in item.reagents.items():
             mat = material.check_in_materials(x[0])
             price = mat.get_price()
-            if price == 0:
-                print('Material {} missing price data'.format(x[0]))
-                return None
+            if mat.craftable is False:
+                if price == 0:
+                    print('Uncraftable material {} missing price data'.format(x[0]))
+                else:
+                    crafting_cost += price
             else:
                 if len(mat.reagents) > 0:
                     crafting_cost += self.get_crafting_cost(mat) * float(x[1])
                 else:
-                    crafting_cost += price * float(x[1])
+                    print('Craftable material {} is missing crafting reagents'.format(x[0]))
+        if 0 < item.get_price() < crafting_cost and crafting_cost > 0:
+            print('Item {} is cheaper to buy than craft.'.format(item.name))
         return crafting_cost
 
     def get_crafts(self, num):
