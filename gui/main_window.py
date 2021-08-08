@@ -126,7 +126,7 @@ class MainWindow:
         self.stock_frame = tk.Frame(self.main_window)
         self.stock_list = self.cc.get_stock()
         for i in range(len(self.stock_list)):
-            for j in range(len(self.stock_list[1])):
+            for j in range(len(self.stock_list[0])):
                 e = tk.Entry(self.stock_frame)
                 e.grid(row=i, column=j)
                 e.insert(0, self.stock_list[i][j])
