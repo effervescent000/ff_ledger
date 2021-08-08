@@ -189,7 +189,6 @@ class MainWindow:
             self.material_price_var.set(mat.get_price())
         except AttributeError:
             self.material_price_var.set('0')
-
         if len(mat.reagents) == 0:
             self.material_crafting_var.set('0')
         else:
