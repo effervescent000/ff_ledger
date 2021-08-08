@@ -71,3 +71,31 @@ class CraftingCalc:
     def get_profit(self, item):
         item.profit = item.get_price() - self.get_crafting_cost(item)
         return item.profit
+        
+    def get_gph(self, item):
+    	"""
+    	Derive gil/hour.
+    	"""
+    	if len(item.sales_data) > 0 and len(item.stock_data) > 0:
+    		# figure out the average time between stocking and selling
+    		if len(item.stock_data) >= len(item.sales_data):
+    			deltas = []
+	    		for x in item.sales_data:
+	    			matching_stock = self.match_stock(item, x)
+	    			if matching_stock is not None:
+	    				deltas.append(matching_stock - x)
+	    		total_time = datetime.timedelta()
+	    		for x in deltas:
+	    			total_time += x
+	    		avg_time = total_time / len(deltas)
+	    		return self.get_profit(item) / avg_time
+	    		
+	    			
+
+	def match_stock(self, item, sale_time):
+		for x in item.stock_data:
+			if x < sale_time:
+				return x
+		return None		
+	    			
+    			
