@@ -35,6 +35,7 @@ class Product(item.Item):
         self.profit = 0
         self.stock_data = []
         self.sales_data = []
+        self.craftable = True
 
     def prep_for_records(self):
         """

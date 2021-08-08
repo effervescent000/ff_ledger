@@ -4,6 +4,7 @@ from tkinter import ttk
 import gui.new_material_window as nmw
 import gui.new_product_window as npw
 import gui.crafting_mats_window as cmw
+import gui.edit_window as ew
 import material
 import product
 import crafting_calc
@@ -35,7 +36,7 @@ class MainWindow:
         self.product_hq_checkbox = tk.Checkbutton(self.upper_frame, text='HQ', variable=self.product_hq_checkbox_var)
         add_sale_button = tk.Button(self.upper_frame, text='Add sale')
         add_stock_button = tk.Button(self.upper_frame, text='Add stock')
-        edit_entries_products = tk.Button(self.upper_frame, text='Edit entries')
+        edit_product = tk.Button(self.upper_frame, text='Edit')
         add_price_products = tk.Button(self.upper_frame, text='Add price point')
         add_product_button = tk.Button(self.upper_frame, text='Add product')
         add_crafting_mats_product_button = tk.Button(self.upper_frame, text='Add crafting mats')
@@ -48,6 +49,7 @@ class MainWindow:
         product_stock_label = tk.Label(self.upper_frame, textvariable=self.product_stock_var)
 
         add_price_products.bind('<Button-1>', self.add_product_price_click)
+        edit_product.bind('<Button-1>', self.edit_product_click)
         add_sale_button.bind('<Button-1>', self.add_sale_click)
         add_stock_button.bind('<Button-1>', self.add_stock_click)
         add_product_button.bind('<Button-1>', self.add_product_click)
@@ -55,7 +57,7 @@ class MainWindow:
         self.product_combo.bind('<<ComboboxSelected>>', self.display_stats_product)
 
         product_widgets = [self.product_combo, self.product_hq_checkbox, self.product_price_entry, add_sale_button,
-                           add_stock_button, edit_entries_products, add_price_products, add_product_button,
+                           add_stock_button, edit_product, add_price_products, add_product_button,
                            add_crafting_mats_product_button]
         col = 0
         for x in product_widgets:
@@ -78,7 +80,7 @@ class MainWindow:
         self.material_hq_checkbox_var = tk.IntVar(self.upper_frame)
         self.material_hq_checkbox = tk.Checkbutton(self.upper_frame, text='HQ', variable=self.material_hq_checkbox_var)
         add_purchase = tk.Button(self.upper_frame, text='Add purchase')
-        edit_entries_materials = tk.Button(self.upper_frame, text='Edit entries')
+        edit_material = tk.Button(self.upper_frame, text='Edit')
         add_price_materials = tk.Button(self.upper_frame, text='Add price point')
         add_material_button = tk.Button(self.upper_frame, text='Add material')
         add_crafting_mats_material_button = tk.Button(self.upper_frame, text='Add crafting mats')
@@ -89,12 +91,13 @@ class MainWindow:
         material_crafting_label = tk.Label(self.upper_frame, textvariable=self.material_crafting_var)
 
         add_material_button.bind('<Button-1>', self.add_material_click)
+        edit_material.bind('<Button-1>', self.edit_material_click)
         add_price_materials.bind('<Button-1>', self.add_material_price_click)
         add_crafting_mats_material_button.bind('<Button-1>', self.crafting_mats_material_click)
         self.material_combo.bind('<<ComboboxSelected>>', self.display_stats_material)
 
         material_widgets = [self.material_combo, self.material_hq_checkbox, self.material_price_entry, add_purchase,
-                            edit_entries_materials, add_price_materials, add_material_button,
+                            edit_material, add_price_materials, add_material_button,
                             add_crafting_mats_material_button]
         col = 0
         for x in material_widgets:
@@ -134,6 +137,12 @@ class MainWindow:
         self.data_frame.grid(row=1, column=1)
 
         self.main_window.mainloop()
+
+    def edit_product_click(self, event):
+        ew.EditWindow(product.check_in_products(self.product_combo.get()))
+
+    def edit_material_click(self, event):
+        ew.EditWindow(material.check_in_materials(self.material_combo.get()))
 
     def purge_button_click(self, event):
         # TODO add an automatic backup to this (or possibly to the save button, just SOMEWHERE
