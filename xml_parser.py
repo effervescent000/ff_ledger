@@ -53,6 +53,9 @@ class XmlParser:
             for x in mat.reagents.items():
                 reagent = et.SubElement(new_mat, 'reagent', {'amount': str(x[1])})
                 reagent.text = x[0]
+            if mat.craftable is True:
+                # add an empty craftable tag if the item can be crafted, the absence of this tag means craftable = False
+                et.SubElement(new_mat, 'craftable')
 
     def populate_items(self):
         for child in self.root:
@@ -104,6 +107,11 @@ class XmlParser:
             if child.text is not None:
                 new_material.reagents[child.text] = child.attrib['amount']
         material.add_to_material_list(new_material)
+        # if a craftable tag is present, the material can be crafted
+        if node.find('craftable') is None:
+            new_material.craftable = False
+        else:
+            new_material.craftable = True
 
     def save_xml(self):
         print('Saving...')
