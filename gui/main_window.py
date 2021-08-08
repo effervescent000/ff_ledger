@@ -108,13 +108,16 @@ class MainWindow:
         save_button = tk.Button(self.data_frame, text='Save data')
         load_button = tk.Button(self.data_frame, text='Load data')
         craft_queue_button = tk.Button(self.data_frame, text='Crafting queue')
+        purge_button = tk.Button(self.data_frame, text='Purge data')
 
         save_button.bind('<Button-1>', self.save_button_click)
         craft_queue_button.bind('<Button-1>', self.craft_queue_button_click)
+        purge_button.bind('<Button-1>', self.purge_button_click)
 
         save_button.grid(row=4, column=5)
         load_button.grid(row=5, column=5)
         craft_queue_button.grid(row=6, column=5)
+        purge_button.grid(row=7, column=5)
 
         # now beginning stock display
         self.stock_frame = tk.Frame(self.main_window)
@@ -131,6 +134,21 @@ class MainWindow:
         self.data_frame.grid(row=1, column=1)
 
         self.main_window.mainloop()
+
+    def purge_button_click(self, event):
+        # TODO add an automatic backup to this (or possibly to the save button, just SOMEWHERE
+        for x in product.product_list:
+            x.stock_data = []
+            x.price_data = []
+            x.sales_data = []
+            x.price = 0
+            x.sales = 0
+            x.stock = 0
+        for x in material.material_list:
+            x.price_data = []
+            x.price = 0
+            x.stock_data = []
+            x.stock = 0
 
     def craft_queue_button_click(self, event):
         # TODO add a way to select the number of crafts from the GUI
