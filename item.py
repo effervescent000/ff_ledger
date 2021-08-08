@@ -1,10 +1,9 @@
 import datetime
-import statistics
-
 import price
 
 
 class Item:
+    # TODO remove the subclasses of material and product, turn everything into items
     def __init__(self, name):
         self.name = name
         self.price = 0
@@ -12,7 +11,7 @@ class Item:
         self.price_data = []
         self.hq = None  # true or false
         self.reagents = {}
-        self.craftable = None  # should be true or false
+        self.craftable = False  # should be true or false
         self.stock = 0
 
     def add_price_point(self, num, time=datetime.datetime.now()):
