@@ -1,5 +1,6 @@
 import material
 import product
+import datetime
 
 
 class CraftingCalc:
@@ -41,8 +42,9 @@ class CraftingCalc:
         :param num: The number of items to craft/the length of the list (1-indexed).
         :return: The list of items to craft.
         """
-        temp_craft_list = []
-        backup_craft_list = []
+        primary_craft_list = []
+        secondary_craft_list = []
+        tertiary_craft_list = []
         craft_list = []
         for x in product.product_list:
             if x.stock <= 0:
@@ -50,52 +52,76 @@ class CraftingCalc:
                 if x.stock < 0:
                     print('{} has < 0 stock'.format(x.name))
                 if x.sales > 0:
-                    temp_craft_list.append(x)
+                    gph = self.get_gph(x)
+                    if gph is not None:
+                        primary_craft_list.append(x)
+                        x.profit = gph
+                        x.units = 'gph'
+                    else:
+                        secondary_craft_list.append(x)
+                        x.profit = self.get_profit(x)
                 else:
-                    backup_craft_list.append(x)
+                    tertiary_craft_list.append(x)
+                    x.profit = self.get_profit(x)
 
-        temp_craft_list.sort(key=self.get_profit, reverse=True)
-        backup_craft_list.sort(key=self.get_profit, reverse=True)
-        if len(temp_craft_list) < num:
-            craft_list = [x for x in temp_craft_list]
+        primary_craft_list.sort(key=self.get_gph, reverse=True)
+        secondary_craft_list.sort(key=self.get_profit, reverse=True)
+        tertiary_craft_list.sort(key=self.get_profit, reverse=True)
+
+        if len(primary_craft_list) < num:
+            craft_list = [x for x in primary_craft_list]
         else:
             for i in range(num):
-                craft_list.append(temp_craft_list[i])
+                craft_list.append(primary_craft_list[i])
+
         if len(craft_list) < num:
-            print('temp_craft_list too short, adding products without sales')
-            for i in range(num - len(craft_list)):
-                craft_list.append(backup_craft_list[i])
+            print('primary_craft_list too short, adding products without gph calculation but with sales')
+            n = num - len(craft_list)
+            if n < len(secondary_craft_list):
+                for i in range(num - len(craft_list)):
+                    craft_list.append(secondary_craft_list[i])
+            else:
+                for i in range(len(secondary_craft_list)):
+                    craft_list.append(secondary_craft_list[i])
+
+        if len(craft_list) < num:
+            print('secondary_craft_list too short, adding products without sales')
+            n = num - len(craft_list)
+            if n < len(tertiary_craft_list):
+                for i in range(num - len(craft_list)):
+                    craft_list.append(tertiary_craft_list[i])
+            else:
+                for i in range(len(tertiary_craft_list)):
+                    craft_list.append(tertiary_craft_list[i])
 
         return craft_list
 
     def get_profit(self, item):
-        item.profit = item.get_price() - self.get_crafting_cost(item)
-        return item.profit
-        
-    def get_gph(self, item):
-    	"""
-    	Derive gil/hour.
-    	"""
-    	if len(item.sales_data) > 0 and len(item.stock_data) > 0:
-    		# figure out the average time between stocking and selling
-    		if len(item.stock_data) >= len(item.sales_data):
-    			deltas = []
-	    		for x in item.sales_data:
-	    			matching_stock = self.match_stock(item, x)
-	    			if matching_stock is not None:
-	    				deltas.append(matching_stock - x)
-	    		total_time = datetime.timedelta()
-	    		for x in deltas:
-	    			total_time += x
-	    		avg_time = total_time / len(deltas)
-	    		return self.get_profit(item) / avg_time
-	    		
-	    			
+        return item.get_price() - self.get_crafting_cost(item)
 
-	def match_stock(self, item, sale_time):
-		for x in item.stock_data:
-			if x < sale_time:
-				return x
-		return None		
-	    			
-    			
+    def get_gph(self, item):
+        """
+        Derive gil/hour.
+        """
+        if len(item.sales_data) > 0 and len(item.stock_data) > 0:
+            # figure out the average time between stocking and selling
+            if len(item.stock_data) >= len(item.sales_data):
+                deltas = []
+                for x in item.sales_data:
+                    matching_stock = self.match_stock(item, x)
+                    if matching_stock is not None:
+                        deltas.append(x - matching_stock)
+                total_time = datetime.timedelta()
+                for x in deltas:
+                    total_time += x
+                avg_time = total_time / len(deltas)
+                return self.get_profit(item) / (avg_time.seconds / 3600)
+
+    def match_stock(self, item, sale_time):
+        # TODO as this currently works it still has the issue of multiple sales potentially being assigned to the same
+        #  stock, what I'll probably need to do is pass a copy of the stock list that I can remove a stock from when
+        #  it's matched
+        for x in reversed(item.stock_data):
+            if x < sale_time:
+                return x
+        return None

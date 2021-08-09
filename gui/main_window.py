@@ -163,7 +163,7 @@ class MainWindow:
         # TODO add a way to select the number of crafts from the GUI
         craft_queue = self.cc.get_crafts(5)
         for x in craft_queue:
-            print('{} for {} gil'.format(x.name, x.profit))
+            print('{} for {} {}'.format(x.name, x.profit, x.units))
 
     def crafting_mats_product_click(self, event):
         cmw.CraftingMatsWindow(product.check_in_products(self.chosen_product.get()))

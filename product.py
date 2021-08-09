@@ -33,6 +33,7 @@ class Product(item.Item):
         self.sales = 0
         self.sales_str = None
         self.profit = 0
+        self.units = 'gil'  # valid options are 'raw' and 'gph'
         self.stock_data = []
         self.sales_data = []
         self.craftable = True
