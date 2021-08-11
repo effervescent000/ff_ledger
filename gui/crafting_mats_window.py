@@ -1,8 +1,7 @@
-import item
 import tkinter as tk
 from tkinter import ttk
 
-import material
+import item
 
 
 class CraftingMatsWindow:
@@ -23,7 +22,7 @@ class CraftingMatsWindow:
             x.grid(row=r, column=0)
             r += 1
 
-        option_list = [x.name for x in material.material_list]
+        option_list = [x.name for x in item.material_list]
         option_list.sort()
 
         self.item_1_var = tk.StringVar(self.crafting_mats_window)
@@ -81,19 +80,19 @@ class CraftingMatsWindow:
 
     def add_crafting_reagent(self, num):
         if num == 1:
-            k = material.check_in_materials(self.item_1_var.get())
+            k = item.check_in_materials(self.item_1_var.get())
             v = self.quantity_1_entry.get()
         elif num == 2:
-            k = material.check_in_materials(self.item_2_var.get())
+            k = item.check_in_materials(self.item_2_var.get())
             v = self.quantity_2_entry.get()
         elif num == 3:
-            k = material.check_in_materials(self.item_3_var.get())
+            k = item.check_in_materials(self.item_3_var.get())
             v = self.quantity_3_entry.get()
         elif num == 4:
-            k = material.check_in_materials(self.item_4_var.get())
+            k = item.check_in_materials(self.item_4_var.get())
             v = self.quantity_4_entry.get()
         elif num == 5:
-            k = material.check_in_materials(self.item_5_var.get())
+            k = item.check_in_materials(self.item_5_var.get())
             v = self.quantity_5_entry.get()
         if v is None:
             v = 1

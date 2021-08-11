@@ -1,6 +1,50 @@
 import datetime
 import price
 
+product_list = []
+
+
+def check_in_products(name):
+    """
+    Checks if an item is in the product_list.
+    :param name: String representing the product.
+    :return: The product that shares the string (or False if no matching product is found).
+    """
+    if len(product_list) == 0:
+        return False
+    else:
+        for x in product_list:
+            if name == x.name:
+                return x
+        return False
+
+
+def add_to_product_list(prod):
+    if check_in_products(prod.name) is False:
+        product_list.append(prod)
+    else:
+        print('Attempted to add item {} that is already in product list'.format(prod.name))
+
+
+material_list = []
+
+
+def check_in_materials(name):
+    if len(material_list) == 0:
+        return False
+    else:
+        for x in material_list:
+            if name == x.name:
+                return x
+        return False
+
+
+def add_to_material_list(mat):
+    if check_in_materials(mat.name) is False:
+        material_list.append(mat)
+    else:
+        print('Attempted to add item {} that is already in material list'.format(mat.name))
+
 
 class Item:
     # TODO remove the subclasses of material and product, turn everything into items
@@ -11,8 +55,12 @@ class Item:
         self.price_data = []
         self.hq = None  # true or false
         self.reagents = {}
-        self.craftable = False  # should be true or false
+        self.craftable = None  # should be true or false
         self.stock = 0
+        self.stock_data = []
+        self.sales = 0
+        self.sales_data = []
+        self.type = None  # valid types are product or material
 
     def add_price_point(self, num, time=datetime.datetime.now()):
         self.price_data.append(price.Price(int(num), time))

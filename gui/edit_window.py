@@ -3,6 +3,7 @@ import tkinter as tk
 
 class EditWindow:
     def __init__(self, item):
+        # TODO add a way to edit sales/stocks amounts directly and/or a way to edit sales/stocking entries
         self.item = item
         self.edit_window = tk.Tk()
         edit_frame = tk.Frame(self.edit_window)

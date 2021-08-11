@@ -1,13 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
 
-import gui.new_material_window as nmw
-import gui.new_product_window as npw
+import crafting_calc
 import gui.crafting_mats_window as cmw
 import gui.edit_window as ew
-import material
-import product
-import crafting_calc
+import gui.new_material_window as nmw
+import gui.new_product_window as npw
+import item
 
 
 class MainWindow:
@@ -19,7 +18,7 @@ class MainWindow:
 
         # TODO implement a way to export crafting tree w/o sales/stocking data
 
-        self.products = [x.name for x in product.product_list]
+        self.products = [x.name for x in item.product_list]
         self.products.sort()
         if len(self.products) == 0:
             self.products.append('None')
@@ -68,7 +67,7 @@ class MainWindow:
         product_crafting_label.grid(row=1, column=2)
         product_stock_label.grid(row=1, column=3)
 
-        self.materials = [x.name for x in material.material_list]
+        self.materials = [x.name for x in item.material_list]
         self.materials.sort()
         if len(self.materials) == 0:
             self.materials.append('None')
@@ -139,21 +138,21 @@ class MainWindow:
         self.main_window.mainloop()
 
     def edit_product_click(self, event):
-        ew.EditWindow(product.check_in_products(self.product_combo.get()))
+        ew.EditWindow(item.check_in_products(self.product_combo.get()))
 
     def edit_material_click(self, event):
-        ew.EditWindow(material.check_in_materials(self.material_combo.get()))
+        ew.EditWindow(item.check_in_materials(self.material_combo.get()))
 
     def purge_button_click(self, event):
         # TODO add an automatic backup to this (or possibly to the save button, just SOMEWHERE
-        for x in product.product_list:
+        for x in item.product_list:
             x.stock_data = []
             x.price_data = []
             x.sales_data = []
             x.price = 0
             x.sales = 0
             x.stock = 0
-        for x in material.material_list:
+        for x in item.material_list:
             x.price_data = []
             x.price = 0
             x.stock_data = []
@@ -166,13 +165,13 @@ class MainWindow:
             print('{} for {} {}'.format(x.name, x.profit, x.units))
 
     def crafting_mats_product_click(self, event):
-        cmw.CraftingMatsWindow(product.check_in_products(self.chosen_product.get()))
+        cmw.CraftingMatsWindow(item.check_in_products(self.chosen_product.get()))
 
     def crafting_mats_material_click(self, event):
-        cmw.CraftingMatsWindow(material.check_in_materials(self.chosen_material.get()))
+        cmw.CraftingMatsWindow(item.check_in_materials(self.chosen_material.get()))
 
     def display_stats_product(self, event=None):
-        prod = product.check_in_products(self.product_combo.get())
+        prod = item.check_in_products(self.product_combo.get())
         try:
             self.product_price_var.set(prod.get_price())
         except AttributeError:
@@ -184,7 +183,7 @@ class MainWindow:
         self.product_stock_var.set(prod.stock)
 
     def display_stats_material(self, event=None):
-        mat = material.check_in_materials(self.material_combo.get())
+        mat = item.check_in_materials(self.material_combo.get())
         try:
             self.material_price_var.set(mat.get_price())
         except AttributeError:
@@ -198,26 +197,26 @@ class MainWindow:
         if self.product_price_entry.get() is '':
             print('Please enter a sale value!')
         else:
-            prod = product.check_in_products(self.product_combo.get())
+            prod = item.check_in_products(self.product_combo.get())
             prod.add_sale()
             prod.add_price_point(int(self.product_price_entry.get()) / .95)
             self.display_stats_product()
 
     def add_stock_click(self, event):
-        prod = product.check_in_products(self.product_combo.get())
+        prod = item.check_in_products(self.product_combo.get())
         prod.add_stock()
         self.display_stats_product()
 
     def add_product_price_click(self, event):
         if self.chosen_product is not None and self.product_price_entry.get() is not None:
-            prod = product.check_in_products(self.chosen_product.get())
+            prod = item.check_in_products(self.chosen_product.get())
             if prod is not False:
                 prod.add_price_point(self.product_price_entry.get())
                 self.display_stats_product()
 
     def add_material_price_click(self, event):
         if self.chosen_material is not None and self.material_price_entry.get() is not None:
-            mat = material.check_in_materials((self.chosen_material.get()))
+            mat = item.check_in_materials((self.chosen_material.get()))
             if mat is not False:
                 mat.add_price_point(self.material_price_entry.get())
                 self.display_stats_material()
@@ -229,10 +228,10 @@ class MainWindow:
         npw.NewProductWindow()
 
     def save_button_click(self, event):
-        for x in product.product_list:
+        for x in item.product_list:
             x.prep_for_records()
             self.xp.add_product_to_xml(x)
-        for x in material.material_list:
+        for x in item.material_list:
             x.prep_for_records()
             self.xp.add_material_to_xml(x)
 

@@ -1,5 +1,6 @@
 import tkinter as tk
-import product
+
+import item
 
 
 class NewProductWindow:
@@ -24,15 +25,16 @@ class NewProductWindow:
         ok_button.bind('<Button-1>', self.save_new_product)
 
     def save_new_product(self, event):
-        product_result = product.check_in_products(self.product_name)
+        product_result = item.check_in_products(self.product_name)
         price = self.product_price.get()
         if product_result is not False and product_result is not None:
             if price != '':
                 product_result.add_price_point(price)
                 print('Attempted to add an existing product to the list, updating price')
         else:
-            new_product = product.Product(self.product_name.get())
+            new_product = item.Item(self.product_name.get())
+            new_product.type = 'product'
             if price != '':
                 new_product.add_price_point(self.product_price.get())
-            product.product_list.append(new_product)
+            item.product_list.append(new_product)
         self.new_product_window.destroy()

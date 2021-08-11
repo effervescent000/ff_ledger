@@ -1,5 +1,6 @@
 import tkinter as tk
-import material
+
+import item
 
 
 class NewMaterialWindow:
@@ -31,17 +32,18 @@ class NewMaterialWindow:
         ok_button.bind('<Button-1>', self.save_new_material)
 
     def save_new_material(self, event):
-        material_result = material.check_in_materials(self.material_name)
+        material_result = item.check_in_materials(self.material_name)
         if material_result is not False and material_result is not None:
             material_result.add_price_point(self.material_price.get())
             print('Attempted to add an existing material to the list, updating price')
         else:
-            new_material = material.Material(self.material_name.get())
+            new_material = item.Item(self.material_name.get())
+            new_material.type = 'material'
             if self.material_price.get() != '':
                 new_material.add_price_point(self.material_price.get())
             if self.craftable_var.get() == 0:
                 new_material.craftable = False
             else:
                 new_material.craftable = True
-            material.material_list.append(new_material)
+            item.material_list.append(new_material)
         self.new_material_window.destroy()

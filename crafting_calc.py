@@ -1,6 +1,6 @@
-import material
-import product
 import datetime
+
+import item
 
 
 class CraftingCalc:
@@ -9,16 +9,16 @@ class CraftingCalc:
 
     def get_stock(self):
         stock = []
-        for x in product.product_list:
+        for x in item.product_list:
             if x.stock > 0:
                 stock.append((x.stock, x.name))
         return stock
 
-    def get_crafting_cost(self, item):
+    def get_crafting_cost(self, item_to_check):
         # TODO report if an item found in the drill down is missing pricing info
         crafting_cost = 0
-        for x in item.reagents.items():
-            mat = material.check_in_materials(x[0])
+        for x in item_to_check.reagents.items():
+            mat = item.check_in_materials(x[0])
             price = mat.get_price()
             if mat.craftable is False:
                 if price == 0:
@@ -30,8 +30,8 @@ class CraftingCalc:
                     crafting_cost += self.get_crafting_cost(mat) * float(x[1])
                 else:
                     print('Craftable material {} is missing crafting reagents'.format(x[0]))
-        if 0 < item.get_price() < crafting_cost and crafting_cost > 0:
-            print('Item {} is cheaper to buy than craft.'.format(item.name))
+        if 0 < item_to_check.get_price() < crafting_cost and crafting_cost > 0:
+            print('Item {} is cheaper to buy than craft.'.format(item_to_check.name))
         return crafting_cost
 
     def get_crafts(self, num):
@@ -46,7 +46,7 @@ class CraftingCalc:
         secondary_craft_list = []
         tertiary_craft_list = []
         craft_list = []
-        for x in product.product_list:
+        for x in item.product_list:
             if x.stock <= 0:
                 # debug check/message to be removed eventually
                 if x.stock < 0:
