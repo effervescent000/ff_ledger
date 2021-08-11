@@ -43,47 +43,6 @@ class XmlParser:
                         new_sale = et.SubElement(sales, 'time')
                         new_sale.text = str(x)
 
-    # def add_product_to_xml(self, prod):
-    #     # TODO add HQ as an attribute
-    #     if self.root.findtext(prod.name) is None:
-    #         new_prod = et.SubElement(self.root, 'product')
-    #         new_prod.text = prod.name
-    #         sales = et.SubElement(new_prod, 'sales')
-    #         sales.text = str(prod.sales)
-    #         if len(prod.sales_data) > 0:
-    #             for x in prod.sales_data:
-    #                 new_sale = et.SubElement(sales, 'time')
-    #                 new_sale.text = str(x)
-    #         stock = et.SubElement(new_prod, 'stock')
-    #         stock.text = str(prod.stock)
-    #         if len(prod.stock_data) > 0:
-    #             for x in prod.stock_data:
-    #                 new_stock = et.SubElement(stock, 'time')
-    #                 new_stock.text = str(x)
-    #         for x in prod.price_data:
-    #             price_element = et.SubElement(new_prod, 'price', {'time': x.time_str})
-    #             price_element.text = str(x.price)
-    #         for x in prod.reagents.items():
-    #             reagent = et.SubElement(new_prod, 'reagent', {'amount': str(x[1])})
-    #             reagent.text = x[0]
-    #
-    # def add_material_to_xml(self, mat):
-    #     # TODO add HQ as an attribute
-    #     if self.root.findtext(mat.name) is None:
-    #         new_mat = et.SubElement(self.root, 'material')
-    #         new_mat.text = mat.name
-    #         purchases = et.SubElement(new_mat, 'purchases')
-    #         purchases.text = str(mat.purchases)
-    #         for x in mat.price_data:
-    #             price_element = et.SubElement(new_mat, 'price', {'time': x.time_str})
-    #             price_element.text = str(x.price)
-    #         for x in mat.reagents.items():
-    #             reagent = et.SubElement(new_mat, 'reagent', {'amount': str(x[1])})
-    #             reagent.text = x[0]
-    #         if mat.craftable is True:
-    #             # add an empty craftable tag if the item can be crafted, the absence of this tag means craftable = False
-    #             et.SubElement(new_mat, 'craftable')
-
     def populate_items(self):
         for child in self.root:
             self.get_item_from_xml(child)
@@ -130,48 +89,6 @@ class XmlParser:
             for child in node.findall('reagent'):
                 if child.text is not None:
                     new_item.reagents[child.text] = child.attrib['amount']
-
-    # def get_product_from_xml(self, node):
-    #     new_product = product.Product(node.text)
-    #     for child in node.findall('price'):
-    #         if child.text is None:
-    #             child_price = 0
-    #         else:
-    #             child_price = int(child.text)
-    #         child_time = datetime.strptime(child.attrib['time'], self.time_format)
-    #         new_product.add_price_point(child_price, child_time)
-    #     for child in node.findall('reagent'):
-    #         if child.text is not None:
-    #             new_product.reagents[child.text] = child.attrib['amount']
-    #     product.add_to_product_list(new_product)
-    #     sales = node.find('sales')
-    #     if sales is not None:
-    #         new_product.sales = int(sales.text)
-    #         for child in sales:
-    #             new_product.sales_data.append(datetime.strptime(child.text, self.time_format))
-    #     stock = node.find('stock')
-    #     if stock is not None:
-    #         new_product.stock = int(stock.text)
-    #         for child in stock:
-    #             new_product.stock_data.append(datetime.strptime(child.text, self.time_format))
-
-    # def get_material_from_xml(self, node):
-    #     new_material = material.Material(node.text)
-    #     for child in node.findall('price'):
-    #         if child.text is None:
-    #             child_price = 0
-    #         else:
-    #             child_price = int(child.text)
-    #         child_time = datetime.strptime(child.attrib['time'], self.time_format)
-    #         new_material.add_price_point(child_price, child_time)
-    #     for child in node.findall('reagent'):
-    #         if child.text is not None:
-    #             new_material.reagents[child.text] = child.attrib['amount']
-    #     material.add_to_material_list(new_material)
-    #     if node.find('craftable') is None:
-    #         new_material.craftable = False
-    #     else:
-    #         new_material.craftable = True
 
     def save_xml(self):
         print('Saving...')
