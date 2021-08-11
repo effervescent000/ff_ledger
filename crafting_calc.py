@@ -107,21 +107,20 @@ class CraftingCalc:
             # figure out the average time between stocking and selling
             if len(item.stock_data) >= len(item.sales_data):
                 deltas = []
+                copy_stock_data = [x for x in item.stock_data]
                 for x in item.sales_data:
-                    matching_stock = self.match_stock(item, x)
+                    matching_stock = self.match_stock(x, copy_stock_data)
                     if matching_stock is not None:
                         deltas.append(x - matching_stock)
+                        copy_stock_data.remove(matching_stock)
                 total_time = datetime.timedelta()
                 for x in deltas:
                     total_time += x
                 avg_time = total_time / len(deltas)
                 return self.get_profit(item) / (avg_time.days * 24 + avg_time.seconds / 3600)
 
-    def match_stock(self, item, sale_time):
-        # TODO as this currently works it still has the issue of multiple sales potentially being assigned to the same
-        #  stock, what I'll probably need to do is pass a copy of the stock list that I can remove a stock from when
-        #  it's matched
-        for x in reversed(item.stock_data):
+    def match_stock(self, sale_time, stock_list):
+        for x in stock_list:
             if x < sale_time:
                 return x
         return None
