@@ -79,3 +79,27 @@ class Item:
             for x in self.price_data:
                 x.price_str = str(x.price)
                 x.time_str = str(x.time)
+
+    def add_sale(self, time=datetime.datetime.now()):
+        """
+        Adds a single sale to the product and subtracts a unit of stack, at the time passed (defaults to when the
+        method is called. Also prunes old sale records.
+        :param time:
+        """
+        if self.stock > 0:
+            self.stock -= 1
+        self.sales += 1
+        self.sales_data.append(time)
+        if len(self.sales_data) > 10:
+            self.sales_data.pop(0)
+
+    def add_stock(self, time=datetime.datetime.now()):
+        """
+        Add a single unit of stock to the product, at the time passed (defaults to when the method is called). Also
+        prunes old stock records.
+        :param time:
+        """
+        self.stock += 1
+        self.stock_data.append(time)
+        if len(self.stock_data) > 10:
+            self.stock_data.pop(0)

@@ -21,7 +21,7 @@ class XmlParser:
             item_xml = et.SubElement(self.root, item_obj.type)
             item_xml.text = item_obj.name
             stock = et.SubElement(item_xml, 'stock')
-            stock.text = item_obj.stock
+            stock.text = str(item_obj.stock)
             if len(item_obj.stock_data) > 0:
                 for x in item_obj.stock_data:
                     new_stock = et.SubElement(stock, 'time')

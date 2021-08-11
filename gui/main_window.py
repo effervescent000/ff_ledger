@@ -230,10 +230,10 @@ class MainWindow:
     def save_button_click(self, event):
         for x in item.product_list:
             x.prep_for_records()
-            self.xp.add_product_to_xml(x)
+            self.xp.add_item_to_xml(x)
         for x in item.material_list:
             x.prep_for_records()
-            self.xp.add_material_to_xml(x)
+            self.xp.add_item_to_xml(x)
 
         self.xp.save_xml()
         self.main_window.destroy()
