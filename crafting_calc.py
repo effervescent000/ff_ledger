@@ -115,7 +115,7 @@ class CraftingCalc:
                 for x in deltas:
                     total_time += x
                 avg_time = total_time / len(deltas)
-                return self.get_profit(item) / (avg_time.seconds / 3600)
+                return self.get_profit(item) / (avg_time.days * 24 + avg_time.seconds / 3600)
 
     def match_stock(self, item, sale_time):
         # TODO as this currently works it still has the issue of multiple sales potentially being assigned to the same
