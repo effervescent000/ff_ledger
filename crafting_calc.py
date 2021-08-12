@@ -122,4 +122,3 @@ class CraftingCalc:
         for x in stock_list:
             if x < sale_time:
                 return x
-        return None
