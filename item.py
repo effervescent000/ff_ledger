@@ -61,6 +61,7 @@ class Item:
         self.sales = 0
         self.sales_data = []
         self.type = None  # valid types are product or material
+        self.units = 'gil'
 
     def add_price_point(self, num, time=datetime.datetime.now()):
         self.price_data.append(price.Price(int(num), time))
