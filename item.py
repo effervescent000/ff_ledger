@@ -102,5 +102,5 @@ class Item:
         """
         self.stock += 1
         self.stock_data.append(time)
-        if len(self.stock_data) > 10:
+        if len(self.stock_data) > 15:
             self.stock_data.pop(0)
