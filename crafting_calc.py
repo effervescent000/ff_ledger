@@ -121,4 +121,7 @@ class CraftingCalc:
     def match_stock(self, sale_time, stock_list):
         for x in stock_list:
             if x < sale_time:
-                return x
+                # disregard matches that have a time gap of longer than a week
+                time_gap = sale_time - x
+                if time_gap.days < 7:
+                    return x
