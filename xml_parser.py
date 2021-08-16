@@ -7,7 +7,7 @@ import item
 class XmlParser:
     def __init__(self, name):
         self.name = name
-        self.time_format = '%Y-%m-%d %H:%M:%S.%f'
+        self.time_format = '%Y-%m-%d %H:%M'
         try:
             self.tree = et.parse(name)
             self.root = self.tree.getroot()
@@ -25,9 +25,9 @@ class XmlParser:
             if len(item_obj.stock_data) > 0:
                 for x in item_obj.stock_data:
                     new_stock = et.SubElement(stock, 'time')
-                    new_stock.text = str(x)
+                    new_stock.text = x.strftime(self.time_format)
             for x in item_obj.price_data:
-                price_ele = et.SubElement(item_xml, 'price', {'time': x.time_str})
+                price_ele = et.SubElement(item_xml, 'price', {'time': x.time.strftime(self.time_format)})
                 price_ele.text = str(x.price)
             if item_obj.craftable is True:
                 et.SubElement(item_xml, 'craftable')
@@ -41,7 +41,7 @@ class XmlParser:
                 if len(item_obj.sales_data) > 0:
                     for x in item_obj.sales_data:
                         new_sale = et.SubElement(sales, 'time')
-                        new_sale.text = str(x)
+                        new_sale.text = x.strftime(self.time_format)
 
     def populate_items(self):
         for child in self.root:
