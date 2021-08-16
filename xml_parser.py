@@ -3,11 +3,12 @@ from datetime import datetime
 
 import item
 
+time_format = '%Y-%m-%d %H:%M'
+
 
 class XmlParser:
     def __init__(self, name):
         self.name = name
-        self.time_format = '%Y-%m-%d %H:%M'
         try:
             self.tree = et.parse(name)
             self.root = self.tree.getroot()
@@ -25,9 +26,9 @@ class XmlParser:
             if len(item_obj.stock_data) > 0:
                 for x in item_obj.stock_data:
                     new_stock = et.SubElement(stock, 'time')
-                    new_stock.text = x.strftime(self.time_format)
+                    new_stock.text = x.strftime(time_format)
             for x in item_obj.price_data:
-                price_ele = et.SubElement(item_xml, 'price', {'time': x.time.strftime(self.time_format)})
+                price_ele = et.SubElement(item_xml, 'price', {'time': x.time.strftime(time_format)})
                 price_ele.text = str(x.price)
             if item_obj.craftable is True:
                 et.SubElement(item_xml, 'craftable')
@@ -41,7 +42,7 @@ class XmlParser:
                 if len(item_obj.sales_data) > 0:
                     for x in item_obj.sales_data:
                         new_sale = et.SubElement(sales, 'time')
-                        new_sale.text = x.strftime(self.time_format)
+                        new_sale.text = x.strftime(time_format)
 
     def populate_items(self):
         for child in self.root:
@@ -59,7 +60,7 @@ class XmlParser:
                 child_price = 0
             else:
                 child_price = int(child.text)
-            child_time = datetime.strptime(child.attrib['time'], self.time_format)
+            child_time = datetime.strptime(child.attrib['time'], time_format)
             new_item.add_price_point(child_price, child_time)
 
         if new_item.type == 'product':
@@ -67,12 +68,12 @@ class XmlParser:
             if sales is not None:
                 new_item.sales = int(sales.text)
                 for child in sales:
-                    new_item.sales_data.append(datetime.strptime(child.text, self.time_format))
+                    new_item.sales_data.append(datetime.strptime(child.text, time_format))
             stock = node.find('stock')
             if stock is not None:
                 new_item.stock = int(stock.text)
                 for child in stock:
-                    new_item.stock_data.append(datetime.strptime(child.text, self.time_format))
+                    new_item.stock_data.append(datetime.strptime(child.text, time_format))
             item.add_to_product_list(new_item)
             new_item.craftable = True
         elif new_item.type == 'material':
