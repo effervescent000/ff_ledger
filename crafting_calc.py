@@ -15,7 +15,6 @@ class CraftingCalc:
         return stock
 
     def get_crafting_cost(self, item_to_check):
-        # TODO report if an item found in the drill down is missing pricing info
         crafting_cost = 0
         for x in item_to_check.reagents.items():
             mat = item.check_in_materials(x[0])

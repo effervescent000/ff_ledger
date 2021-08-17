@@ -47,7 +47,6 @@ def add_to_material_list(mat):
 
 
 class Item:
-    # TODO remove the subclasses of material and product, turn everything into items
     def __init__(self, name):
         self.name = name
         self.price = 0

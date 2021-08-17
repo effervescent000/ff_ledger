@@ -11,7 +11,6 @@ import item
 
 class MainWindow:
     def __init__(self, xp):
-        # TODO add a "craftable" checkbox somewhere (not necessarily in main_window)
         self.xp = xp
         self.main_window = tk.Tk()
         self.cc = crafting_calc.CraftingCalc()
