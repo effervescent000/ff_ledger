@@ -98,5 +98,8 @@ class EditWindow:
         if time_item in self.item.stock_data:
             time_index = self.item.stock_data.index(time_item)
             dtp.DateTimePicker(self.item, time_index, item_type)
+        elif time_item in self.item.sales_data:
+            time_index = self.item.sales_data.index(time_item)
+            dtp.DateTimePicker(self.item, time_index, item_type)
         else:
-            print('Somehow time_item {} is not in stock_data for {}'.format(str(time_item), self.item.name))
+            print('Somehow time_item {} is not in stock_data or sales_data for {}'.format(str(time_item), self.item.name))
