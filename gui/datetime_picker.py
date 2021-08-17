@@ -1,7 +1,7 @@
 import datetime
 import tkinter as tk
 import tkcalendar as tkc
-import xml_parser as xp
+import utils
 
 
 class DateTimePicker:
@@ -70,7 +70,7 @@ class DateTimePicker:
         time_string = '{}:{}'.format(
             str(time_hours),
             self.minutes_spin.get())
-        new_datetime = datetime.datetime.strptime('{} {}'.format(date_string, time_string), xp.time_format)
+        new_datetime = datetime.datetime.strptime('{} {}'.format(date_string, time_string), utils.time_format)
         if self.item_type == 'sales':
             self.item.sales_data[self.index] = new_datetime
         elif self.item_type == 'stock':

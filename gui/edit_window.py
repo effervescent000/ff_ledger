@@ -1,6 +1,6 @@
 import tkinter as tk
 import gui.datetime_picker as dtp
-import xml_parser as xp
+import utils
 import datetime
 
 
@@ -26,7 +26,7 @@ class EditWindow:
         if len(self.item.stock_data) > 0:
             for x in reversed(self.item.stock_data):
                 time_var = tk.StringVar(stock_frame)
-                time_var.set(x.strftime(xp.time_format))
+                time_var.set(x.strftime(utils.time_format))
                 time_entry = tk.Entry(stock_frame, textvariable=time_var, state=tk.DISABLED)
                 time_entry.bind('<ButtonRelease-1>', self.edit_time_click)
                 self.stock_item_list.append(time_entry)
@@ -39,7 +39,7 @@ class EditWindow:
             # TODO update this to also include a price from a matching time to be editable, for now just doing the times
             for x in reversed(self.item.sales_data):
                 time_var = tk.StringVar(sales_frame)
-                time_var.set(x.strftime(xp.time_format))
+                time_var.set(x.strftime(utils.time_format))
                 time_entry = tk.Entry(sales_frame, textvariable=time_var, state=tk.DISABLED)
                 time_entry.bind('<ButtonRelease-1>', self.edit_time_click)
                 self.sales_item_list.append(time_entry)
@@ -94,7 +94,7 @@ class EditWindow:
             item_type = 'stock'
         else:
             print('Event.widget is somehow not in either sales_item_list or stock_item_list')
-        time_item = datetime.datetime.strptime(time_item, xp.time_format)
+        time_item = datetime.datetime.strptime(time_item, utils.time_format)
         if time_item in self.item.stock_data:
             time_index = self.item.stock_data.index(time_item)
             dtp.DateTimePicker(self.item, time_index, item_type)
