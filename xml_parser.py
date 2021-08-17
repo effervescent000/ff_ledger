@@ -2,8 +2,7 @@ import xml.etree.ElementTree as et
 from datetime import datetime
 
 import item
-
-time_format = '%Y-%m-%d %H:%M'
+from utils import time_format
 
 
 class XmlParser:

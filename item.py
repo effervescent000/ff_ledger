@@ -1,5 +1,6 @@
 import datetime
 import price
+import utils
 
 product_list = []
 
@@ -86,6 +87,7 @@ class Item:
         method is called. Also prunes old sale records.
         :param time:
         """
+        time = utils.convert_to_time_format(time)
         if self.stock > 0:
             self.stock -= 1
         self.sales += 1
@@ -99,6 +101,7 @@ class Item:
         prunes old stock records.
         :param time:
         """
+        time = utils.convert_to_time_format(time)
         self.stock += 1
         self.stock_data.append(time)
         if len(self.stock_data) > 15:
