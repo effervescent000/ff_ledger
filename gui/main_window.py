@@ -160,7 +160,8 @@ class MainWindow:
         ew.EditWindow(item.check_in_materials(self.material_combo.get()))
 
     def purge_button_click(self, event):
-        # TODO add an automatic backup to this (or possibly to the save button, just SOMEWHERE
+        # TODO add an automatic backup to this (or possibly to the save button, just SOMEWHERE)
+        # TODO add a confirmation prompt for this very dangerous button
         for x in item.product_list:
             x.stock_data = []
             x.price_data = []

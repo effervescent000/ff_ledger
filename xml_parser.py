@@ -15,6 +15,7 @@ class XmlParser:
         except et.ParseError:
             self.root = et.Element('data')
             self.tree = et.ElementTree(self.root)
+        # TODO create an options xml file
 
     def add_item_to_xml(self, item_obj):
         if self.root.findtext(item_obj.name) is None:
