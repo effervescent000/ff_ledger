@@ -1,25 +1,35 @@
 import xml.etree.ElementTree as et
 from datetime import datetime
-
 import item
 from utils import time_format
 
 
 class XmlParser:
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, data_file, options_file):
+        self.data_file = data_file
+        # self.options_file = options_file
         try:
-            self.tree = et.parse(name)
-            self.root = self.tree.getroot()
+            self.data_tree = et.parse(data_file)
+            self.data_root = self.data_tree.getroot()
             self.populate_items()
         except et.ParseError:
-            self.root = et.Element('data')
-            self.tree = et.ElementTree(self.root)
-        # TODO create an options xml file
+            self.data_root = et.Element('data')
+            self.data_tree = et.ElementTree(self.data_root)
+        try:
+            self.options_tree = et.parse(options_file)
+            self.options_root = self.options_tree.getroot()
+            self.populate_options()
+        except et.ParseError:
+            self.options_root = et.Element('options')
+            self.options_tree = et.ElementTree(self.options_root)
+
+    def populate_options(self):
+        for child in self.options_root:
+            pass
 
     def add_item_to_xml(self, item_obj):
-        if self.root.findtext(item_obj.name) is None:
-            item_xml = et.SubElement(self.root, item_obj.type)
+        if self.data_root.findtext(item_obj.name) is None:
+            item_xml = et.SubElement(self.data_root, item_obj.type)
             item_xml.text = item_obj.name
             stock = et.SubElement(item_xml, 'stock')
             stock.text = str(item_obj.stock)
@@ -45,10 +55,10 @@ class XmlParser:
                         new_sale.text = x.strftime(time_format)
 
     def populate_items(self):
-        for child in self.root:
+        for child in self.data_root:
             self.get_item_from_xml(child)
         # now that we're done with the tree, delete it. Just nuke it from orbit.
-        self.root.clear()
+        self.data_root.clear()
         # TODO figure out how to properly clear the tree to avoid duplicates, leaving this as a todo right now because
         #  I don't think it's breaking anything
 
@@ -95,6 +105,6 @@ class XmlParser:
         print('Saving...')
         # first, delete the old file so we aren't just appending to it. Commenting this out b/c I'm not sure this was
         # actually the problem
-        with open(self.name, 'w') as f:
-            self.tree.write(f, encoding='unicode')
+        with open(self.data_file, 'w') as f:
+            self.data_tree.write(f, encoding='unicode')
         print('Done saving!')
