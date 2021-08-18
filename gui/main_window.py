@@ -6,7 +6,9 @@ import gui.crafting_mats_window as cmw
 import gui.edit_window as ew
 import gui.new_material_window as nmw
 import gui.new_product_window as npw
+import gui.options_window as ow
 import item
+import options
 
 
 class MainWindow:
@@ -117,20 +119,23 @@ class MainWindow:
         material_crafting_label.grid(row=3, column=2)
 
         # create data frame and contents
-        self.data_frame = tk.Frame(self.main_window)
-        save_button = tk.Button(self.data_frame, text='Save data')
-        load_button = tk.Button(self.data_frame, text='Load data')
-        craft_queue_button = tk.Button(self.data_frame, text='Crafting queue')
-        purge_button = tk.Button(self.data_frame, text='Purge data')
+        data_frame = tk.Frame(self.main_window)
+        save_button = tk.Button(data_frame, text='Save data')
+        load_button = tk.Button(data_frame, text='Load data')
+        craft_queue_button = tk.Button(data_frame, text='Crafting queue')
+        purge_button = tk.Button(data_frame, text='Purge data')
+        options_button = tk.Button(data_frame, text='Options')
 
         save_button.bind('<Button-1>', self.save_button_click)
         craft_queue_button.bind('<Button-1>', self.craft_queue_button_click)
         purge_button.bind('<Button-1>', self.purge_button_click)
+        options_button.bind('<ButtonRelease-1>', self.options_button_click)
 
-        save_button.grid(row=4, column=5)
-        load_button.grid(row=5, column=5)
-        craft_queue_button.grid(row=6, column=5)
-        purge_button.grid(row=7, column=5)
+        data_widgets = [save_button, load_button, craft_queue_button, purge_button, options_button]
+        i = 0
+        for x in data_widgets:
+            x.grid(row=i, column=0)
+            i += 1
 
         # now beginning stock display
         self.stock_frame = tk.Frame(self.main_window)
@@ -144,7 +149,7 @@ class MainWindow:
         # place frames
         self.upper_frame.grid(row=0, column=0, columnspan=2)
         self.stock_frame.grid(row=1, column=0)
-        self.data_frame.grid(row=1, column=1)
+        data_frame.grid(row=1, column=1)
 
         self.main_window.mainloop()
 
@@ -170,8 +175,7 @@ class MainWindow:
             x.stock = 0
 
     def craft_queue_button_click(self, event):
-        # TODO add a way to select the number of crafts from the GUI
-        craft_queue = self.cc.get_crafts(5)
+        craft_queue = self.cc.get_crafts(options.crafting_queue_length)
         for x in craft_queue:
             print('{} for {} {}'.format(x.name, x.profit, x.units))
 
@@ -248,6 +252,9 @@ class MainWindow:
 
         self.xp.save_xml()
         self.main_window.destroy()
+
+    def options_button_click(self, event):
+        ow.OptionsWindow()
 
     class AutocompleteCombobox(ttk.Combobox):
         """Code taken from https://mail.python.org/pipermail/tkinter-discuss/2012-January/003041.html"""
