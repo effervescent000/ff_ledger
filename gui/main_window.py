@@ -52,12 +52,12 @@ class MainWindow:
         product_stock_label = tk.Label(self.upper_frame, textvariable=self.product_stock_var)
 
         # bind product buttons
-        add_price_products.bind('<Button-1>', self.add_product_price_click)
-        edit_product.bind('<Button-1>', self.edit_product_click)
-        add_sale_button.bind('<Button-1>', self.add_sale_click)
-        add_stock_button.bind('<Button-1>', self.add_stock_click)
-        add_product_button.bind('<Button-1>', self.add_product_click)
-        add_crafting_mats_product_button.bind('<Button-1>', self.crafting_mats_product_click)
+        add_price_products.bind('<ButtonRelease-1>', self.add_product_price_click)
+        edit_product.bind('<ButtonRelease-1>', self.edit_product_click)
+        add_sale_button.bind('<ButtonRelease-1>', self.add_sale_click)
+        add_stock_button.bind('<ButtonRelease-1>', self.add_stock_click)
+        add_product_button.bind('<ButtonRelease-1>', self.add_product_click)
+        add_crafting_mats_product_button.bind('<ButtonRelease-1>', self.crafting_mats_product_click)
         self.product_combo.bind('<<ComboboxSelected>>', self.display_stats_product)
 
         # place product widgets
@@ -100,10 +100,10 @@ class MainWindow:
         material_crafting_label = tk.Label(self.upper_frame, textvariable=self.material_crafting_var)
 
         # bind material buttons
-        add_material_button.bind('<Button-1>', self.add_material_click)
-        edit_material.bind('<Button-1>', self.edit_material_click)
-        add_price_materials.bind('<Button-1>', self.add_material_price_click)
-        add_crafting_mats_material_button.bind('<Button-1>', self.crafting_mats_material_click)
+        add_material_button.bind('<ButtonRelease-1>', self.add_material_click)
+        edit_material.bind('<ButtonRelease-1>', self.edit_material_click)
+        add_price_materials.bind('<ButtonRelease-1>', self.add_material_price_click)
+        add_crafting_mats_material_button.bind('<ButtonRelease-1>', self.crafting_mats_material_click)
         self.material_combo.bind('<<ComboboxSelected>>', self.display_stats_material)
 
         # place material widgets
@@ -126,9 +126,9 @@ class MainWindow:
         purge_button = tk.Button(data_frame, text='Purge data')
         options_button = tk.Button(data_frame, text='Options')
 
-        save_button.bind('<Button-1>', self.save_button_click)
-        craft_queue_button.bind('<Button-1>', self.craft_queue_button_click)
-        purge_button.bind('<Button-1>', self.purge_button_click)
+        save_button.bind('<ButtonRelease-1>', self.save_button_click)
+        craft_queue_button.bind('<ButtonRelease-1>', self.craft_queue_button_click)
+        purge_button.bind('<ButtonRelease-1>', self.purge_button_click)
         options_button.bind('<ButtonRelease-1>', self.options_button_click)
 
         data_widgets = [save_button, load_button, craft_queue_button, purge_button, options_button]
