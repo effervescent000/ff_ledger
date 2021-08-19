@@ -1,13 +1,14 @@
 import xml.etree.ElementTree as et
 from datetime import datetime
 import item
+import options
 from utils import time_format
 
 
 class XmlParser:
     def __init__(self, data_file, options_file):
         self.data_file = data_file
-        # self.options_file = options_file
+        self.options_file = options_file
         try:
             self.data_tree = et.parse(data_file)
             self.data_root = self.data_tree.getroot()
@@ -22,10 +23,20 @@ class XmlParser:
         except et.ParseError:
             self.options_root = et.Element('options')
             self.options_tree = et.ElementTree(self.options_root)
+        except FileNotFoundError:
+            with open(data_file, 'w') as f:
+                pass
+            self.options_root = et.Element('options')
+            self.options_tree = et.ElementTree(self.options_root)
 
     def populate_options(self):
         for child in self.options_root:
-            pass
+            if child.tag == 'crafting_queue_length':
+                options.crafting_queue_length = int(child.text)
+
+    def add_options_to_xml(self):
+        craft_queue_length = et.SubElement(self.options_root, 'crafting_queue_length')
+        craft_queue_length.text = str(options.crafting_queue_length)
 
     def add_item_to_xml(self, item_obj):
         if self.data_root.findtext(item_obj.name) is None:
@@ -107,4 +118,6 @@ class XmlParser:
         # actually the problem
         with open(self.data_file, 'w') as f:
             self.data_tree.write(f, encoding='unicode')
+        self.add_options_to_xml()
+        self.options_tree.write(self.options_file, encoding='unicode')
         print('Done saving!')
