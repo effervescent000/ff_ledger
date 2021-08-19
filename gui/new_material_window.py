@@ -29,7 +29,7 @@ class NewMaterialWindow:
         ok_button.grid(row=1, column=2)
         cancel_button.grid(row=2, column=2)
 
-        ok_button.bind('<Button-1>', self.save_new_material)
+        ok_button.bind('<ButtonRelease-1>', self.save_new_material)
 
     def save_new_material(self, event):
         material_result = item.check_in_materials(self.material_name)

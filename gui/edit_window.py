@@ -49,7 +49,7 @@ class EditWindow:
         ok_button = tk.Button(data_frame, text='Ok')
         cancel_button = tk.Button(data_frame, text='Cancel', command=self.edit_window.destroy)
 
-        ok_button.bind('<Button-1>', self.save_button_click)
+        ok_button.bind('<ButtonRelease-1>', self.save_button_click)
 
         # place frames
         edit_frame.grid(row=0, column=0, columnspan=2)

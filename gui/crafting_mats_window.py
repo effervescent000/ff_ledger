@@ -50,7 +50,7 @@ class CraftingMatsWindow:
         self.ok_button.grid(row=5, column=1)
         self.cancel_button.grid(row=6, column=1)
 
-        self.ok_button.bind('<Button-1>', self.save_button_click)
+        self.ok_button.bind('<ButtonRelease-1>', self.save_button_click)
 
         # populate crafting reagents if this item already has them assigned
         if len(self.root_item.reagents) > 0:

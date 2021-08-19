@@ -22,7 +22,7 @@ class NewProductWindow:
         ok_button.grid(row=1, column=2)
         cancel_button.grid(row=2, column=2)
 
-        ok_button.bind('<Button-1>', self.save_new_product)
+        ok_button.bind('<ButtonRelease-1>', self.save_new_product)
 
     def save_new_product(self, event):
         product_result = item.check_in_products(self.product_name)
