@@ -30,7 +30,10 @@ class CraftingCalc:
                 else:
                     print('Craftable material {} is missing crafting reagents'.format(x[0]))
         if 0 < item_to_check.get_price() < crafting_cost and crafting_cost > 0:
+            # if it's cheaper to buy an item than craft it, notify the user and use the purchase price as the crafting
+            # cost
             print('Item {} is cheaper to buy than craft.'.format(item_to_check.name))
+            crafting_cost = item_to_check.get_price()
         return crafting_cost
 
     def get_crafts(self, num):
