@@ -26,6 +26,7 @@ class MainWindow:
             self.products.append('None')
 
         # create upper frame and contents
+        # TODO add a 'remove product' button
         self.upper_frame = tk.Frame(self.main_window)
 
         # TODO figure out how to get the comboboxes to update without having to restart the application
@@ -75,6 +76,7 @@ class MainWindow:
         product_stock_label.grid(row=1, column=3)
 
         # create material contents
+        # TODO add a 'remove material' button
         self.materials = [x.name for x in item.material_list]
         self.materials.sort()
         if len(self.materials) == 0:
@@ -164,7 +166,7 @@ class MainWindow:
 
     def purge_button_click(self, event):
         answer = messagebox.askyesno('Confirmation', 'Are you SURE you want to purge your data?')
-        # TODO add an automatic backup to this (or possibly to the save button, just SOMEWHERE)
+        self.xp.backup_data()
         if answer is True:
             for x in item.product_list:
                 x.stock_data = []

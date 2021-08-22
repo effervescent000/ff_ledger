@@ -112,6 +112,10 @@ class XmlParser:
                 if child.text is not None:
                     new_item.reagents[child.text] = child.attrib['amount']
 
+    def backup_data(self):
+        # TODO actually write this
+        pass
+
     def save_xml(self):
         print('Saving...')
         # first, delete the old file so we aren't just appending to it. Commenting this out b/c I'm not sure this was
