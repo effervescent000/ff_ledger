@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import messagebox
 from tkinter import ttk
 
 import crafting_calc
@@ -162,20 +163,21 @@ class MainWindow:
         ew.EditWindow(item.check_in_materials(self.material_combo.get()))
 
     def purge_button_click(self, event):
+        answer = messagebox.askyesno('Confirmation', 'Are you SURE you want to purge your data?')
         # TODO add an automatic backup to this (or possibly to the save button, just SOMEWHERE)
-        # TODO add a confirmation prompt for this very dangerous button
-        for x in item.product_list:
-            x.stock_data = []
-            x.price_data = []
-            x.sales_data = []
-            x.price = 0
-            x.sales = 0
-            x.stock = 0
-        for x in item.material_list:
-            x.price_data = []
-            x.price = 0
-            x.stock_data = []
-            x.stock = 0
+        if answer is True:
+            for x in item.product_list:
+                x.stock_data = []
+                x.price_data = []
+                x.sales_data = []
+                x.price = 0
+                x.sales = 0
+                x.stock = 0
+            for x in item.material_list:
+                x.price_data = []
+                x.price = 0
+                x.stock_data = []
+                x.stock = 0
 
     def craft_queue_button_click(self, event):
         craft_queue = self.cc.get_crafts(options.crafting_queue_length)
@@ -261,6 +263,7 @@ class MainWindow:
     class AutocompleteCombobox(ttk.Combobox):
         """Code taken from https://mail.python.org/pipermail/tkinter-discuss/2012-January/003041.html"""
 
+        # TODO move this class to its own file and use it in the crafting mats window
         def set_completion_list(self, completion_list):
             """Use our completion list as our drop down selection menu, arrows move through menu."""
             self._completion_list = sorted(completion_list, key=str.lower)  # Work with a sorted list
