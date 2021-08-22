@@ -139,8 +139,10 @@ class MainWindow:
 
         # now beginning stock display
         self.stock_frame = tk.Frame(self.main_window)
+        stock_label = tk.Label(self.stock_frame, text='Current stock')
+        stock_label.grid(row=0, column=0, columnspan=2)
         self.stock_list = self.cc.get_stock()
-        for i in range(len(self.stock_list)):
+        for i in range(1, len(self.stock_list)):
             for j in range(len(self.stock_list[0])):
                 e = tk.Entry(self.stock_frame)
                 e.grid(row=i, column=j)

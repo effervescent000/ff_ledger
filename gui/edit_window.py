@@ -21,6 +21,7 @@ class EditWindow:
 
         # stock list frame and contents
         stock_frame = tk.Frame(self.edit_window)
+        stock_label = tk.Label(stock_frame, text='Stock records')
         self.stock_item_list = []
 
         if len(self.item.stock_data) > 0:
@@ -33,6 +34,7 @@ class EditWindow:
 
         # sales list frame and contents
         sales_frame = tk.Frame(self.edit_window)
+        sales_label = tk.Label(sales_frame, text='Sales records')
         self.sales_item_list = []
 
         if len(self.item.sales_data) > 0:
@@ -62,13 +64,15 @@ class EditWindow:
         craftable_checkbox.grid(row=0, column=1)
 
         # stock frame
-        i = 0
+        stock_label.grid(row=0, column=0)
+        i = 1
         for x in self.stock_item_list:
             x.grid(row=i, column=0)
             i += 1
 
         # sales frame
-        i = 0
+        sales_label.grid(row=0, column=0)
+        i = 1
         for x in self.sales_item_list:
             x.grid(row=i, column=0)
             i += 1
@@ -102,4 +106,5 @@ class EditWindow:
             time_index = self.item.sales_data.index(time_item)
             dtp.DateTimePicker(self.item, time_index, item_type)
         else:
-            print('Somehow time_item {} is not in stock_data or sales_data for {}'.format(str(time_item), self.item.name))
+            print(
+                'Somehow time_item {} is not in stock_data or sales_data for {}'.format(str(time_item), self.item.name))
