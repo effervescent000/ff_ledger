@@ -1,6 +1,8 @@
 import datetime
 import tkinter as tk
 
+import item
+
 time_format = '%Y-%m-%d %H:%M'
 
 
@@ -17,3 +19,11 @@ def send_warning(warning, text_box=None):
         print(warning)
     else:
         text_box.insert(tk.INSERT, '{}\n'.format(warning))
+
+
+def get_stock():
+    stock = []
+    for x in item.product_list:
+        if x.stock > 0:
+            stock.append((x.stock, x.name))
+    return stock
