@@ -166,8 +166,8 @@ class MainWindow:
 
     def purge_button_click(self, event):
         answer = messagebox.askyesno('Confirmation', 'Are you SURE you want to purge your data?')
-        self.xp.backup_data()
         if answer is True:
+            self.xp.backup_data()
             for x in item.product_list:
                 x.stock_data = []
                 x.price_data = []
