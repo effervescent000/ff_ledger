@@ -140,7 +140,7 @@ class MainWindow:
             x.grid(row=i, column=0)
             i += 1
 
-        # now beginning stock display
+        # stock display
         self.stock_frame = tk.Frame(self.main_window)
         stock_label = tk.Label(self.stock_frame, text='Current stock')
         stock_label.grid(row=0, column=0, columnspan=2)
@@ -151,10 +151,20 @@ class MainWindow:
                 e.grid(row=i, column=j)
                 e.insert(0, self.stock_list[i][j])
 
+        # output frame and contents
+        output_frame = tk.Frame(self.main_window)
+        # craft_queue_var = tk.StringVar(output_frame)
+        self.crafting_queue_text = tk.Text(output_frame, width=50, height=15)
+        self.warnings_text = tk.Text(output_frame, width=50, height=15)
+
+        self.crafting_queue_text.grid(row=0, column=0)
+        self.warnings_text.grid(row=1, column=0)
+
         # place frames
-        self.upper_frame.grid(row=0, column=0, columnspan=2)
+        self.upper_frame.grid(row=0, column=0, columnspan=3)
         self.stock_frame.grid(row=1, column=0)
-        data_frame.grid(row=1, column=1)
+        data_frame.grid(row=1, column=1, padx=2)
+        output_frame.grid(row=1, column=2)
 
         self.main_window.mainloop()
 
@@ -183,8 +193,11 @@ class MainWindow:
 
     def craft_queue_button_click(self, event):
         craft_queue = self.cc.get_crafts(options.crafting_queue_length)
+        # clear the crafting queue text before writing to it
+        self.crafting_queue_text.delete(1.0, tk.END)
         for x in craft_queue:
-            print('{} for {} {}'.format(x.name, x.profit, x.units))
+            output_string = '{} for {} {}\n'.format(x.name, x.profit, x.units)
+            self.crafting_queue_text.insert(tk.END, output_string)
 
     def crafting_mats_product_click(self, event):
         cmw.CraftingMatsWindow(item.check_in_products(self.chosen_product.get()))
