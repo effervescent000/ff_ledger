@@ -1,3 +1,4 @@
+import shutil
 import xml.etree.ElementTree as et
 from datetime import datetime
 import item
@@ -113,8 +114,12 @@ class XmlParser:
                     new_item.reagents[child.text] = child.attrib['amount']
 
     def backup_data(self):
-        # TODO actually write this
-        pass
+        if self.data_file.endswith('.xml'):
+            backup_filename = self.data_file[:-4]
+            backup_filename = '{} backup.xml'.format(backup_filename)
+        else:
+            backup_filename = self.data_file
+        shutil.copy2(self.data_file, backup_filename)
 
     def save_xml(self):
         print('Saving...')
