@@ -1,4 +1,5 @@
 import datetime
+import math
 
 import item
 
@@ -119,7 +120,7 @@ class CraftingCalc:
                 for x in deltas:
                     total_time += x
                 avg_time = total_time / len(deltas)
-                return self.get_profit(item_arg) / (avg_time.days * 24 + avg_time.seconds / 3600)
+                return math.floor(self.get_profit(item_arg) / (avg_time.days * 24 + avg_time.seconds / 3600))
 
     def match_stock(self, sale_time, stock_list):
         for x in stock_list:
