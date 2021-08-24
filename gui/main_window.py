@@ -128,6 +128,8 @@ class MainWindow:
         craft_queue_button = tk.Button(data_frame, text='Crafting queue')
         purge_button = tk.Button(data_frame, text='Purge data')
         options_button = tk.Button(data_frame, text='Options')
+        # TODO add a 'price check' (or something) button that will print items w/o recent price data to warning text
+        # TODO add a button to purge old price data (and/or add a way for it to happen automatically, not sure yet)
 
         save_button.bind('<ButtonRelease-1>', self.save_button_click)
         craft_queue_button.bind('<ButtonRelease-1>', self.craft_queue_button_click)

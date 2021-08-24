@@ -1,8 +1,8 @@
 import datetime
 import math
-import tkinter as tk
 
 import item
+import options
 import utils
 
 
@@ -10,12 +10,8 @@ class CraftingCalc:
     def __init__(self):
         pass
 
-    def get_stock(self):
-        stock = []
-        for x in item.product_list:
-            if x.stock > 0:
-                stock.append((x.stock, x.name))
-        return stock
+    # TODO add some functionality to use the most recent price point as a 'current price' if it's from say, within the
+    #  last 6 hours or something, make an option for it
 
     def get_crafting_cost(self, item_to_check, text_box=None):
         crafting_cost = 0
@@ -131,5 +127,5 @@ class CraftingCalc:
                 # disregard matches that have a time gap of longer than a week
                 time_gap = sale_time - x
                 # TODO add an option for setting the desired time gap
-                if time_gap.days < 7:
+                if time_gap.days <= options.time_gap:
                     return x
