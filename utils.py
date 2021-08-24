@@ -1,4 +1,5 @@
 import datetime
+import tkinter as tk
 
 time_format = '%Y-%m-%d %H:%M'
 
@@ -9,3 +10,10 @@ def convert_to_time_format(time):
     new_time = time.strftime(time_format)
     new_time = datetime.datetime.strptime(new_time, time_format)
     return new_time
+
+
+def send_warning(warning, text_box=None):
+    if text_box is None:
+        print(warning)
+    else:
+        text_box.insert(tk.INSERT, '{}\n'.format(warning))

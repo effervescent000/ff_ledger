@@ -192,7 +192,7 @@ class MainWindow:
                 x.stock = 0
 
     def craft_queue_button_click(self, event):
-        craft_queue = self.cc.get_crafts(options.crafting_queue_length)
+        craft_queue = self.cc.get_crafts(options.crafting_queue_length, self.warnings_text)
         # clear the crafting queue text before writing to it
         self.crafting_queue_text.delete(1.0, tk.END)
         for x in craft_queue:
@@ -214,7 +214,7 @@ class MainWindow:
         if len(prod.reagents) == 0:
             self.product_crafting_var.set('0')
         else:
-            self.product_crafting_var.set(self.cc.get_crafting_cost(prod))
+            self.product_crafting_var.set(self.cc.get_crafting_cost(prod, self.warnings_text))
         self.product_stock_var.set(prod.stock)
 
     def display_stats_material(self, event=None):
@@ -226,7 +226,7 @@ class MainWindow:
         if len(mat.reagents) == 0:
             self.material_crafting_var.set('0')
         else:
-            self.material_crafting_var.set(self.cc.get_crafting_cost(mat))
+            self.material_crafting_var.set(self.cc.get_crafting_cost(mat, self.warnings_text))
 
     def add_sale_click(self, event):
         if self.product_price_entry.get() is '':
