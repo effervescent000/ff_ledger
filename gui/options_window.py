@@ -21,6 +21,8 @@ class OptionsWindow:
         self.time_gap_entry = tk.Entry(options_frame, textvariable=time_gap_var, width=5)
         time_gap_label = tk.Label(options_frame, text='Maximum time gap for match_stock')
 
+        # TODO add options related to price purging
+
         # create contents of data_frame
         ok_button = tk.Button(data_frame, text='Ok')
         cancel_button = tk.Button(data_frame, text='Cancel', command=self.options_window.destroy)

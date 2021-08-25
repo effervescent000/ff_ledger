@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 
-import crafting_calc
 import gui.crafting_mats_window as cmw
 import gui.edit_window as ew
 import gui.new_material_window as nmw
@@ -11,6 +10,7 @@ import gui.options_window as ow
 import item
 import options
 import price_management
+import crafting_calc as cc
 from utils import get_stock
 
 
@@ -18,7 +18,6 @@ class MainWindow:
     def __init__(self, xp):
         self.xp = xp
         self.main_window = tk.Tk()
-        self.cc = crafting_calc.CraftingCalc()
 
         # TODO implement a way to export crafting tree w/o sales/stocking data
 
@@ -202,7 +201,7 @@ class MainWindow:
         price_management.purge_old_price_data(self.warnings_text)
 
     def craft_queue_button_click(self, event):
-        craft_queue = self.cc.get_crafts(options.crafting_queue_length, self.warnings_text)
+        craft_queue = cc.get_crafts(options.crafting_queue_length, self.warnings_text)
         # clear the crafting queue text before writing to it
         self.crafting_queue_text.delete(1.0, tk.END)
         for x in craft_queue:
@@ -224,7 +223,7 @@ class MainWindow:
         if len(prod.reagents) == 0:
             self.product_crafting_var.set('0')
         else:
-            self.product_crafting_var.set(self.cc.get_crafting_cost(prod, self.warnings_text))
+            self.product_crafting_var.set(cc.get_crafting_cost(prod, self.warnings_text))
         self.product_stock_var.set(prod.stock)
 
     def display_stats_material(self, event=None):
@@ -236,7 +235,7 @@ class MainWindow:
         if len(mat.reagents) == 0:
             self.material_crafting_var.set('0')
         else:
-            self.material_crafting_var.set(self.cc.get_crafting_cost(mat, self.warnings_text))
+            self.material_crafting_var.set(cc.get_crafting_cost(mat, self.warnings_text))
 
     def add_sale_click(self, event):
         if self.product_price_entry.get() is '':
