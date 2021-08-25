@@ -10,6 +10,7 @@ import gui.new_product_window as npw
 import gui.options_window as ow
 import item
 import options
+import price_management
 from utils import get_stock
 
 
@@ -135,8 +136,9 @@ class MainWindow:
 
         save_button.bind('<ButtonRelease-1>', self.save_button_click)
         craft_queue_button.bind('<ButtonRelease-1>', self.craft_queue_button_click)
-        purge_data_button.bind('<ButtonRelease-1>', self.purge_button_click)
+        purge_data_button.bind('<ButtonRelease-1>', self.purge_records_button_click)
         options_button.bind('<ButtonRelease-1>', self.options_button_click)
+        purge_prices_button.bind('<ButtonRelease-1>', self.purge_prices_button_click)
 
         data_widgets = [save_button, load_button, craft_queue_button, purge_data_button, purge_prices_button,
                         options_button]
@@ -179,7 +181,7 @@ class MainWindow:
     def edit_material_click(self, event):
         ew.EditWindow(item.check_in_materials(self.material_combo.get()))
 
-    def purge_button_click(self, event):
+    def purge_records_button_click(self, event):
         answer = messagebox.askyesno('Confirmation', 'Are you SURE you want to purge your data?')
         if answer is True:
             self.xp.backup_data()
@@ -195,6 +197,9 @@ class MainWindow:
                 x.price = 0
                 x.stock_data = []
                 x.stock = 0
+
+    def purge_prices_button_click(self, event):
+        price_management.purge_old_price_data(self.warnings_text)
 
     def craft_queue_button_click(self, event):
         craft_queue = self.cc.get_crafts(options.crafting_queue_length, self.warnings_text)
