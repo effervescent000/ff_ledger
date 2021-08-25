@@ -110,7 +110,7 @@ class CraftingCalc:
             deltas = []
             copy_stock_data = [x for x in item_arg.stock_data]
             for x in item_arg.sales_data:
-                matching_stock = self.match_stock(x, copy_stock_data)
+                matching_stock = match_stock(x, copy_stock_data)
                 if matching_stock is not None:
                     deltas.append(x - matching_stock)
                     copy_stock_data.remove(matching_stock)
@@ -121,11 +121,11 @@ class CraftingCalc:
                 avg_time = total_time / len(deltas)
                 return math.floor(self.get_profit(item_arg, text_box) / (avg_time.days * 24 + avg_time.seconds / 3600))
 
-    def match_stock(self, sale_time, stock_list):
-        for x in stock_list:
-            if x < sale_time:
-                # disregard matches that have a time gap of longer than a week
-                time_gap = sale_time - x
-                # TODO add an option for setting the desired time gap
-                if time_gap.days <= options.time_gap:
-                    return x
+
+def match_stock(sale_time, stock_list):
+    for x in stock_list:
+        if x < sale_time:
+            # disregard matches that have a time gap of longer than a week
+            time_gap = sale_time - x
+            if time_gap.days <= options.time_gap:
+                return x

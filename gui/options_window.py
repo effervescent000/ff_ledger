@@ -15,7 +15,6 @@ class OptionsWindow:
         crafting_queue_var.set(str(options.crafting_queue_length))
         self.crafting_queue_entry = tk.Entry(options_frame, textvariable=crafting_queue_var, width=5)
         crafting_queue_label = tk.Label(options_frame, text='Length of crafting queue')
-        # TODO add an option for the time gap for match_stock
 
         time_gap_var = tk.StringVar(options_frame)
         time_gap_var.set(str(options.time_gap))
