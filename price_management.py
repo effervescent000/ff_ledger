@@ -21,8 +21,8 @@ def purge_list(item_list):
                 x.price_data.pop(0)
                 count += 1
             # delta = datetime.datetime.now() - x.price_data[0].time
-            while len(x.price_data) > 0 and \
-                    (datetime.datetime.now() - x.price_data[0].time).days > options.price_purge_time:
+            while len(x.price_data) > 0 and (
+                    datetime.datetime.now() - x.price_data[0].time).days > options.price_purge_time:
                 x.price_data.pop(0)
                 count += 1
     return count
