@@ -234,7 +234,7 @@ class MainWindow:
         else:
             prod = item.check_in_products(self.product_combo.get())
             prod.add_sale()
-            prod.add_price_point(int(self.product_price_entry.get()) / .95)
+            prod.add_price_point(int(self.product_price_entry.get()))
             self.display_stats_product()
 
     def add_stock_click(self, event):
