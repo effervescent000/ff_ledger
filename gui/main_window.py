@@ -126,18 +126,20 @@ class MainWindow:
         data_frame = tk.Frame(self.main_window)
         save_button = tk.Button(data_frame, text='Save data')
         load_button = tk.Button(data_frame, text='Load data')
+        # TODO make the load button do something lol
         craft_queue_button = tk.Button(data_frame, text='Crafting queue')
-        purge_button = tk.Button(data_frame, text='Purge data')
+        purge_data_button = tk.Button(data_frame, text='Purge records')
         options_button = tk.Button(data_frame, text='Options')
         # TODO add a 'price check' (or something) button that will print items w/o recent price data to warning text
-        # TODO add a button to purge old price data (and/or add a way for it to happen automatically, not sure yet)
+        purge_prices_button = tk.Button(data_frame, text='Purge old price data')
 
         save_button.bind('<ButtonRelease-1>', self.save_button_click)
         craft_queue_button.bind('<ButtonRelease-1>', self.craft_queue_button_click)
-        purge_button.bind('<ButtonRelease-1>', self.purge_button_click)
+        purge_data_button.bind('<ButtonRelease-1>', self.purge_button_click)
         options_button.bind('<ButtonRelease-1>', self.options_button_click)
 
-        data_widgets = [save_button, load_button, craft_queue_button, purge_button, options_button]
+        data_widgets = [save_button, load_button, craft_queue_button, purge_data_button, purge_prices_button,
+                        options_button]
         i = 0
         for x in data_widgets:
             x.grid(row=i, column=0)
