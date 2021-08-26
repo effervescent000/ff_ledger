@@ -11,6 +11,7 @@ import item
 import options
 import price_management
 import crafting_calc as cc
+import utils
 from utils import get_stock
 
 
@@ -217,9 +218,13 @@ class MainWindow:
     def display_stats_product(self, event=None):
         prod = item.check_in_products(self.product_combo.get())
         try:
+            price = prod.get_price()
             self.product_price_var.set(prod.get_price())
+            if price == 0:
+                utils.send_warning('{} is missing price data'.format(prod.name), self.warnings_text)
         except AttributeError:
             self.product_price_var.set('0')
+            utils.send_warning('{} is missing price data'.format(prod.name), self.warnings_text)
         if len(prod.reagents) == 0:
             self.product_crafting_var.set('0')
         else:

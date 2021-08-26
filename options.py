@@ -6,6 +6,8 @@ time_gap = 7
 price_purge_time = 14
 """the amount of price points over which old data will be purged"""
 price_purge_amount = 10
+"""The maximum amount of time (in hours) for a price to be considered current/recent"""
+current_price_time = 8
 
 
 def reset_to_defaults():
@@ -13,3 +15,4 @@ def reset_to_defaults():
     time_gap = 7
     price_purge_time = 14
     price_purge_amount = 10
+    current_price_time = 8
