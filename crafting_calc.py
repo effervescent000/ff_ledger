@@ -71,7 +71,6 @@ def get_crafts(num, text_box=None):
     else:
         for i in range(num):
             craft_list.append(primary_craft_list[i])
-
     if len(craft_list) < num:
         print('primary_craft_list too short, adding products without gph calculation but with sales')
         n = num - len(craft_list)
@@ -81,7 +80,6 @@ def get_crafts(num, text_box=None):
         else:
             for i in range(len(secondary_craft_list)):
                 craft_list.append(secondary_craft_list[i])
-
     if len(craft_list) < num:
         print('secondary_craft_list too short, adding products without sales')
         n = num - len(craft_list)
@@ -91,11 +89,7 @@ def get_crafts(num, text_box=None):
         else:
             for i in range(len(tertiary_craft_list)):
                 craft_list.append(tertiary_craft_list[i])
-
     return craft_list
-
-    # TODO add some functionality to use the most recent price point as a 'current price' if it's from say, within the
-    #  last 6 hours or something, make an option for it
 
 
 def get_crafting_cost(item_to_check, text_box=None):

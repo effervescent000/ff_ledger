@@ -1,5 +1,6 @@
 import datetime
 
+import options
 import price
 import utils
 
@@ -70,7 +71,12 @@ class Item:
     def get_price(self):
         price_list = [x.price for x in self.price_data if x.price > 0]
         if len(price_list) > 0:
-            self.price = sum(price_list) / len(price_list)
+            """check to see if last price in the list is 'recent' (according to options), if so use that, otherwise 
+            get the average"""
+            if (datetime.datetime.now() - price_list[len(price_list) - 1]).seconds * 3600 < options.current_price_time:
+                self.price = self.price_data[len(self.price_data) - 1]
+            else:
+                self.price = sum(price_list) / len(price_list)
         else:
             self.price = 0
         return self.price
