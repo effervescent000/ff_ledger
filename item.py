@@ -73,7 +73,8 @@ class Item:
         if len(price_list) > 0:
             """check to see if last price in the list is 'recent' (according to options), if so use that, otherwise 
             get the average"""
-            if (datetime.datetime.now() - price_list[len(price_list) - 1]).seconds * 3600 < options.current_price_time:
+            last_price_time = self.price_data[len(self.price_data) - 1].time
+            if (datetime.datetime.now() - last_price_time).seconds * 3600 < options.current_price_time:
                 self.price = self.price_data[len(self.price_data) - 1]
             else:
                 self.price = sum(price_list) / len(price_list)
