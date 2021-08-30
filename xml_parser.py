@@ -35,10 +35,14 @@ class XmlParser:
         for child in self.options_root:
             if child.tag == 'crafting_queue_length':
                 options.crafting_queue_length = int(child.text)
+            elif child.tag == 'time_gap_match_stock':
+                options.time_gap = int(child.text)
 
     def add_options_to_xml(self):
         craft_queue_length = et.SubElement(self.options_root, 'crafting_queue_length')
         craft_queue_length.text = str(options.crafting_queue_length)
+        time_gap = et.SubElement(self.options_root, 'time_gap_match_stock')
+        time_gap.text = str(options.time_gap)
 
     def add_item_to_xml(self, item_obj):
         if self.data_root.findtext(item_obj.name) is None:

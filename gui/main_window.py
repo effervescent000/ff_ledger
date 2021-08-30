@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 
-import crafting_calc
 import gui.crafting_mats_window as cmw
 import gui.edit_window as ew
 import gui.new_material_window as nmw
@@ -10,13 +9,16 @@ import gui.new_product_window as npw
 import gui.options_window as ow
 import item
 import options
+import price_management
+import crafting_calc as cc
+import utils
+from utils import get_stock
 
 
 class MainWindow:
     def __init__(self, xp):
         self.xp = xp
         self.main_window = tk.Tk()
-        self.cc = crafting_calc.CraftingCalc()
 
         # TODO implement a way to export crafting tree w/o sales/stocking data
 
@@ -125,16 +127,21 @@ class MainWindow:
         data_frame = tk.Frame(self.main_window)
         save_button = tk.Button(data_frame, text='Save data')
         load_button = tk.Button(data_frame, text='Load data')
+        # TODO make the load button do something lol
         craft_queue_button = tk.Button(data_frame, text='Crafting queue')
-        purge_button = tk.Button(data_frame, text='Purge data')
+        purge_data_button = tk.Button(data_frame, text='Purge records')
         options_button = tk.Button(data_frame, text='Options')
+        # TODO add a 'price check' (or something) button that will print items w/o recent price data to warning text
+        purge_prices_button = tk.Button(data_frame, text='Purge old price data')
 
         save_button.bind('<ButtonRelease-1>', self.save_button_click)
         craft_queue_button.bind('<ButtonRelease-1>', self.craft_queue_button_click)
-        purge_button.bind('<ButtonRelease-1>', self.purge_button_click)
+        purge_data_button.bind('<ButtonRelease-1>', self.purge_records_button_click)
         options_button.bind('<ButtonRelease-1>', self.options_button_click)
+        purge_prices_button.bind('<ButtonRelease-1>', self.purge_prices_button_click)
 
-        data_widgets = [save_button, load_button, craft_queue_button, purge_button, options_button]
+        data_widgets = [save_button, load_button, craft_queue_button, purge_data_button, purge_prices_button,
+                        options_button]
         i = 0
         for x in data_widgets:
             x.grid(row=i, column=0)
@@ -144,7 +151,7 @@ class MainWindow:
         self.stock_frame = tk.Frame(self.main_window)
         stock_label = tk.Label(self.stock_frame, text='Current stock')
         stock_label.grid(row=0, column=0, columnspan=2)
-        self.stock_list = self.cc.get_stock()
+        self.stock_list = get_stock()
         for i in range(1, len(self.stock_list)):
             for j in range(len(self.stock_list[0])):
                 e = tk.Entry(self.stock_frame)
@@ -174,7 +181,7 @@ class MainWindow:
     def edit_material_click(self, event):
         ew.EditWindow(item.check_in_materials(self.material_combo.get()))
 
-    def purge_button_click(self, event):
+    def purge_records_button_click(self, event):
         answer = messagebox.askyesno('Confirmation', 'Are you SURE you want to purge your data?')
         if answer is True:
             self.xp.backup_data()
@@ -191,8 +198,11 @@ class MainWindow:
                 x.stock_data = []
                 x.stock = 0
 
+    def purge_prices_button_click(self, event):
+        price_management.purge_old_price_data(self.warnings_text)
+
     def craft_queue_button_click(self, event):
-        craft_queue = self.cc.get_crafts(options.crafting_queue_length, self.warnings_text)
+        craft_queue = cc.get_crafts(options.crafting_queue_length, self.warnings_text)
         # clear the crafting queue text before writing to it
         self.crafting_queue_text.delete(1.0, tk.END)
         for x in craft_queue:
@@ -208,13 +218,17 @@ class MainWindow:
     def display_stats_product(self, event=None):
         prod = item.check_in_products(self.product_combo.get())
         try:
+            price = prod.get_price()
             self.product_price_var.set(prod.get_price())
+            if price == 0:
+                utils.send_warning('{} is missing price data'.format(prod.name), self.warnings_text)
         except AttributeError:
             self.product_price_var.set('0')
+            utils.send_warning('{} is missing price data'.format(prod.name), self.warnings_text)
         if len(prod.reagents) == 0:
             self.product_crafting_var.set('0')
         else:
-            self.product_crafting_var.set(self.cc.get_crafting_cost(prod, self.warnings_text))
+            self.product_crafting_var.set(cc.get_crafting_cost(prod, self.warnings_text))
         self.product_stock_var.set(prod.stock)
 
     def display_stats_material(self, event=None):
@@ -226,7 +240,7 @@ class MainWindow:
         if len(mat.reagents) == 0:
             self.material_crafting_var.set('0')
         else:
-            self.material_crafting_var.set(self.cc.get_crafting_cost(mat, self.warnings_text))
+            self.material_crafting_var.set(cc.get_crafting_cost(mat, self.warnings_text))
 
     def add_sale_click(self, event):
         if self.product_price_entry.get() is '':
